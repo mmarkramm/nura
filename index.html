@@ -87,8 +87,8 @@ body {
   background: #ffecd2; 
   opacity: 0;
   pointer-events: none;
-  z-index: 25;
-  transition: opacity 0.3s ease-in-out; /* Slightly faster transition */
+  z-index: 200; /* High z-index to cover everything */
+  transition: opacity 0.25s ease-in-out; /* Faster flash */
 }
 
 .confetti {
@@ -228,7 +228,7 @@ document.body.addEventListener("click", (e) => {
       if (step === 6) setupHug();
     }
   } else if (scene === 3) {
-    // START COUNTING ONLY IN SCENE 3
+    // Taps only count in Scene 3
     tapCount++;
     scene3Taps++;
 
@@ -305,24 +305,28 @@ function finishHug() {
   clearInterval(interval);
   window.removeEventListener("pointerdown", holdStart);
   window.removeEventListener("pointerup", holdEnd);
-  window.removeEventListener("pointerleave", holdEnd);
-  window.removeEventListener("pointercancel", holdEnd);
   
   vibrate([30, 150, 30]); 
   hint.innerText = "hehe thank you :)";
 
-  // TRIGGER FLASH FASTER
+  // SNAPPY TRANSITION LOGIC
   setTimeout(() => {
     flashOverlay.style.opacity = "1";
+    
+    // Swap image IMMEDIATELY while screen is white
     setTimeout(() => {
       scene = 3;
       progressContainer.style.display = "none";
       bg.src = "assets/scene2/msg.png";
       hint.innerText = "tap for more :)";
-      flashOverlay.style.opacity = "0";
       startConfetti();
-    }, 400); // 100ms faster transition
-  }, 600); // Trigger 400ms earlier
+      
+      // Wait a tiny bit then fade out white overlay
+      setTimeout(() => {
+        flashOverlay.style.opacity = "0";
+      }, 100); 
+    }, 250); 
+  }, 600); 
 }
 
 function spawnHeart() {
