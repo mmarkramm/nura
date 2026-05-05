@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>For Nura 🎂</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fdf6e3;
+      overflow: hidden;
+      touch-action: none;
+      font-family: "Marker Felt", "Bradley Hand ITC", "Comic Sans MS", cursive;
+    }
+
+    .main-container {
+      position: relative;
+      width: 100%;
+      max-width: 800px;
+      aspect-ratio: 1024 / 540;
+    }
+
+    .scene-img { 
+      width: 100%; 
+      height: 100%; 
+      display: block; 
+      object-fit: contain; 
+    }
+
+    .bottom-hint {
+      position: absolute;
+      bottom: 4%; 
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      width: auto;
+      pointer-events: none;
+      
+      /* Light Pinkish Background (Soft Blush) */
+      background: rgba(255, 182, 193, 0.7); 
+      padding: 12px 28px;
+      border-radius: 50px;
+      /* Darker pink border to define the shape */
+      border: 2px solid rgba(255, 105, 180, 0.3);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      z-index: 10;
+    }
+
+    .hint-text {
+      font-size: 20px;
+      color: #000; 
+      /* Using 900 for that extra-thick, noticeable look */
+      font-weight: 900; 
+      white-space: nowrap;
+      letter-spacing: 0.5px;
+      /* White glow to make black text pop off the pink */
+      text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.5);
+    }
+
+    .progress-container {
+      position: absolute;
+      bottom: 22%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40%;
+      height: 12px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 10px;
+      /* Added a noticeable border so the track is visible */
+      border: 2px solid #444;
+      display: none;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: #ffb7b2;
+      /* Added a small transition to make the bar fill smoothly */
+      transition: width 0.1s linear;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="main-container">
+    <img id="bg" class="scene-img" src="assets/scene1/intro0.png">
+
+    <div class="progress-container" id="progressContainer">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div class="bottom-hint">
+      <div id="hint" class="hint-text">tap me :)</div>
+    </div>
+  </div>
+
+  <script>
+    const bg = document.getElementById("bg");
+    const hint = document.getElementById("hint");
+    const progressContainer = document.getElementById("progressContainer");
+    const progressBar = document.getElementById("progressBar");
+
+    let scene = 1;
+    let step = 0;
+    let progress = 0;
+    let interval;
+    let holding = false;
+
+    const introImages = [
+      "assets/scene1/intro0.png",
+      "assets/scene1/intro1.png",
+      "assets/scene1/intro2.png",
+      "assets/scene1/intro3.png",
+      "assets/scene1/intro4.png",
+      "assets/scene1/intro5.png",
+      "assets/scene1/intro6.png"
+    ];
+
+    const msgPool = [
+      "assets/scene2/msg.png",
+      "assets/scene2/msg1.png", "assets/scene2/msg2.png", 
+      "assets/scene2/msg3.png", "assets/scene2/msg4.png", 
+      "assets/scene2/msg5.png", "assets/scene2/msg6.png", 
+      "assets/scene2/msg7.png", "assets/scene2/msg8.png"
+    ];
+
+    document.body.addEventListener("click", () => {
+      if (scene === 1) {
+        step++;
+        if (step < introImages.length) {
+          bg.src = introImages[step];
+          if (step === 6) setupHug();
+        }
+      } else if (scene === 3) {
+        const randomMsg = msgPool[Math.floor(Math.random() * msgPool.length)];
+        bg.src = randomMsg;
+      }
+    });
+
+    function setupHug() {
+      scene = 2;
+      hint.innerText = "hold to hug";
+      progressContainer.style.display = "block";
+
+      window.addEventListener("mousedown", holdStart);
+      window.addEventListener("mouseup", holdEnd);
+      window.addEventListener("touchstart", (e) => { e.preventDefault(); holdStart(); }, { passive: false });
+      window.addEventListener("touchend", holdEnd);
+    }
+
+    function holdStart() {
+      if (scene !== 2) return;
+      holding = true;
+      hint.innerText = "hugging you...";
+      interval = setInterval(() => {
+        progress += 2;
+        progressBar.style.width = progress + "%";
+        if (progress >= 100) finishHug();
+      }, 50);
+    }
+
+    function holdEnd() {
+      if (scene !== 2 || !holding) return;
+      holding = false;
+      clearInterval(interval);
+      if (progress < 100) {
+        progress = 0;
+        progressBar.style.width = "0%";
+        hint.innerText = "don't let go yet! :(";
+      }
+    }
+
+    function finishHug() {
+      holding = false;
+      clearInterval(interval);
+      hint.innerText = "hehe thank you :)";
+      setTimeout(() => {
+        scene = 3;
+        progressContainer.style.display = "none";
+        bg.src = "assets/scene2/msg.png"; 
+        hint.innerText = "tap again :)";
+      }, 1500);
+    }
+  </script>
+</body>
+</html>
