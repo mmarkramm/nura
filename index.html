@@ -228,7 +228,6 @@ document.body.addEventListener("click", (e) => {
       if (step === 6) setupHug();
     }
   } else if (scene === 3) {
-    // Taps only count in Scene 3
     tapCount++;
     scene3Taps++;
 
@@ -241,7 +240,14 @@ document.body.addEventListener("click", (e) => {
       vibrate([40, 100, 40]); 
       openModal();
     } else {
-      bg.src = msgPool[Math.floor(Math.random() * msgPool.length)];
+      // NEW LOGIC: Show 0-8 in order first, then randomize
+      if (tapCount <= msgPool.length) {
+        // This shows msg.png, then msg1.png, then msg2.png, etc.
+        bg.src = msgPool[tapCount - 1];
+      } else {
+        // Once all have been seen once, start randomizing
+        bg.src = msgPool[Math.floor(Math.random() * msgPool.length)];
+      }
     }
   }
 });
