@@ -1,1 +1,372 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>For Nura 🎂</title><style>*{margin:0;padding:0;box-sizing:border-box}body{height:100vh;display:flex;align-items:center;justify-content:center;background:#fdf6e3;overflow:hidden;touch-action:none;font-family:"Marker Felt","Bradley Hand ITC","Comic Sans MS",cursive}.main-container{position:relative;width:100%;max-width:800px;aspect-ratio:1024/540}#secretModal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:100;padding:20px;touch-action:auto}.modal-content{position:relative;width:100%;max-width:450px;max-height:80vh;background:#fff9f0;border-radius:12px;padding:25px;border:3px solid #ffb7b2;overflow-y:auto;-webkit-overflow-scrolling:touch}.close-btn{position:sticky;top:0;float:right;width:35px;height:35px;background:#ffb7b2;color:#fff;border:2px solid #5d4037;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;cursor:pointer;z-index:110;margin-top:-10px;margin-right:-10px}.letter-p{font-size:15px;text-align:left;text-indent:35px;margin-bottom:15px}#flashOverlay{position:absolute;top:0;left:0;width:100%;height:100%;background:#ffecd2;opacity:0;pointer-events:none;z-index:200;transition:opacity .25s ease-in-out}.confetti{position:absolute;width:10px;height:10px;top:-20px;z-index:15;border-radius:2px;animation:fall linear forwards,swing ease-in-out infinite alternate}.heart{position:absolute;bottom:25%;font-size:20px;z-index:12;pointer-events:none;animation:floatUp 1.5s ease-out forwards}@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}@keyframes swing{from{margin-left:-20px}to{margin-left:20px}}@keyframes floatUp{0%{transform:translateY(0) scale(1);opacity:1}100%{transform:translateY(-150px) scale(1.5);opacity:0}}.scene-img{width:100%;height:100%;display:block;object-fit:contain;user-select:none;-webkit-user-drag:none;pointer-events:none}.bottom-hint{position:absolute;bottom:2%;left:50%;transform:translateX(-50%);pointer-events:none;background:rgba(0,0,0,.6);padding:4px 12px;border-radius:4px;z-index:10;transition:opacity .5s ease}.hint-text{font-size:16px;color:#fff;font-weight:700;white-space:nowrap}.progress-container{position:absolute;bottom:18%;left:50%;transform:translateX(-50%);width:60%;height:18px;background:rgba(255,255,255,.4);border-radius:20px;border:2px solid #5d4037;display:none;overflow:hidden;z-index:5}.progress-bar{height:100%;width:0%;background-color:#ffb7b2;background-image:linear-gradient(45deg,rgba(255,255,255,.3) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.3) 50%,rgba(255,255,255,.3) 75%,transparent 75%,transparent);background-size:30px 30px;animation:moveStripes 1s linear infinite;transition:width .1s linear}@keyframes moveStripes{from{background-position:0 0}to{background-position:30px 0}}</style></head><body><div class="main-container" id="mainContainer"><div id="secretModal"><div class="modal-content"><div class="close-btn" onclick="closeModal()">X</div><div style="color:#5d4037;line-height:1.6"><h4 style="margin-bottom:5px;color:#ffb7b2;font-size:13px;text-align:center">aweee you kept on going.. and found this🥺 by tapping 21 times!! thank you!</h4><h2 style="margin-bottom:20px;color:#5d4037;text-align:center;font-size:22px">To my dear friend...</h2><p class="letter-p">Haiii Al Nura!!! I’m really glad I got to celebrate your birthday with you through this little project, even if just for a while :) . I’m just really happy I could make something like this for someone as kind and supportive as youuu.</p><p class="letter-p">I’m always wishing you the best in everythinggg ✨ and please know that I’m supporting you from afar and rooting for your happiness every single day😊. You deserve all the good things that come your way. Stay precious and amazing! 💖</p><p style="margin-top:15px;text-align:right;font-weight:700;font-size:18px">— Mark</p></div></div></div><div id="flashOverlay"></div><img id="bg" class="scene-img" src="assets/scene1/intro0.png"><div class="progress-container" id="progressContainer"><div class="progress-bar" id="progressBar"></div></div><div id="hintBubble" class="bottom-hint"><div id="hint" class="hint-text">tap me :)</div></div></div><script>var _0x7d_0xg9b=(816013^816004)+(866275^866283);const container=document['\u0067\u0065\u0074\u0045\u006C\u0065\u006D\u0065\u006E\u0074\u0042\u0079\u0049\u0064']("\u006D\u0061\u0069\u006E\u0043\u006F\u006E\u0074\u0061\u0069\u006E\u0065\u0072");_0x7d_0xg9b=252553^252558;const bg=document['\u0067\u0065\u0074\u0045\u006C\u0065\u006D\u0065\u006E\u0074\u0042\u0079\u0049\u0064']("gb".split("").reverse().join(""));let _0x2aef;const hint=document['\u0067\u0065\u0074\u0045\u006C\u0065\u006D\u0065\u006E\u0074\u0042\u0079\u0049\u0064']("\u0068\u0069\u006E\u0074");_0x2aef=(606783^606774)+(203117^203108);let _0xc9df6e;const hintBubble=document['\u0067\u0065\u0074\u0045\u006C\u0065\u006D\u0065\u006E\u0074\u0042\u0079\u0049\u0064']("\u0068\u0069\u006E\u0074\u0042\u0075\u0062\u0062\u006C\u0065");_0xc9df6e='\u006E\u0065\u006D\u0066\u0062\u006B';let _0x79a7d;const progressContainer=document['\u0067\u0065\u0074\u0045\u006C\u0065\u006D\u0065\u006E\u0074\u0042\u0079\u0049\u0064']("\u0070\u0072\u006F\u0067\u0072\u0065\u0073\u0073\u0043\u006F\u006E\u0074\u0061\u0069\u006E\u0065\u0072");_0x79a7d=(765172^765172)+(606884^606893);const progressBar=document['\u0067\u0065\u0074\u0045\u006C\u0065\u006D\u0065\u006E\u0074\u0042\u0079\u0049\u0064']("\u0070\u0072\u006F\u0067\u0072\u0065\u0073\u0073\u0042\u0061\u0072");const flashOverlay=document['\u0067\u0065\u0074\u0045\u006C\u0065\u006D\u0065\u006E\u0074\u0042\u0079\u0049\u0064']("\u0066\u006C\u0061\u0073\u0068\u004F\u0076\u0065\u0072\u006C\u0061\u0079");const secretModal=document['\u0067\u0065\u0074\u0045\u006C\u0065\u006D\u0065\u006E\u0074\u0042\u0079\u0049\u0064']("\u0073\u0065\u0063\u0072\u0065\u0074\u004D\u006F\u0064\u0061\u006C");let scene=850672^850673;let _0x67d64a;let step=313913^313913;_0x67d64a=(421107^421115)+(899697^899705);let _0x6agc;let progress=738955^738955;_0x6agc='\u006C\u0061\u0064\u006D\u0061\u0062';var _0x8deafc=(210297^210302)+(997830^997830);let interval=null;_0x8deafc=(276894^276887)+(452501^452509);let holding=false;let tapCount=588771^588771;let scene3Taps=938037^938037;const introImages=["\u0061\u0073\u0073\u0065\u0074\u0073\u002F\u0073\u0063\u0065\u006E\u0065\u0031\u002F\u0069\u006E\u0074\u0072\u006F\u0030\u002E\u0070\u006E\u0067","gnp.1ortni/1enecs/stessa".split("").reverse().join(""),"\u0061\u0073\u0073\u0065\u0074\u0073\u002F\u0073\u0063\u0065\u006E\u0065\u0031\u002F\u0069\u006E\u0074\u0072\u006F\u0032\u002E\u0070\u006E\u0067","gnp.3ortni/1enecs/stessa".split("").reverse().join(""),"\u0061\u0073\u0073\u0065\u0074\u0073\u002F\u0073\u0063\u0065\u006E\u0065\u0031\u002F\u0069\u006E\u0074\u0072\u006F\u0034\u002E\u0070\u006E\u0067","\u0061\u0073\u0073\u0065\u0074\u0073\u002F\u0073\u0063\u0065\u006E\u0065\u0031\u002F\u0069\u006E\u0074\u0072\u006F\u0035\u002E\u0070\u006E\u0067","gnp.6ortni/1enecs/stessa".split("").reverse().join("")];let _0x2f_0x94c;const msgPool=["\u0061\u0073\u0073\u0065\u0074\u0073\u002F\u0073\u0063\u0065\u006E\u0065\u0032\u002F\u006D\u0073\u0067\u002E\u0070\u006E\u0067","gnp.1gsm/2enecs/stessa".split("").reverse().join(""),"gnp.2gsm/2enecs/stessa".split("").reverse().join(""),"gnp.3gsm/2enecs/stessa".split("").reverse().join(""),"\u0061\u0073\u0073\u0065\u0074\u0073\u002F\u0073\u0063\u0065\u006E\u0065\u0032\u002F\u006D\u0073\u0067\u0034\u002E\u0070\u006E\u0067","\u0061\u0073\u0073\u0065\u0074\u0073\u002F\u0073\u0063\u0065\u006E\u0065\u0032\u002F\u006D\u0073\u0067\u0035\u002E\u0070\u006E\u0067","\u0061\u0073\u0073\u0065\u0074\u0073\u002F\u0073\u0063\u0065\u006E\u0065\u0032\u002F\u006D\u0073\u0067\u0036\u002E\u0070\u006E\u0067","gnp.7gsm/2enecs/stessa".split("").reverse().join(""),"\u0061\u0073\u0073\u0065\u0074\u0073\u002F\u0073\u0063\u0065\u006E\u0065\u0032\u002F\u006D\u0073\u0067\u0038\u002E\u0070\u006E\u0067"];_0x2f_0x94c=296734^296726;function vibrate(ms=448966^448991){if(navigator['\u0076\u0069\u0062\u0072\u0061\u0074\u0065']){try{navigator['\u0076\u0069\u0062\u0072\u0061\u0074\u0065'](ms);}catch(e){}}}document['\u0062\u006F\u0064\u0079']['\u0061\u0064\u0064\u0045\u0076\u0065\u006E\u0074\u004C\u0069\u0073\u0074\u0065\u006E\u0065\u0072']("kcilc".split("").reverse().join(""),e=>{if(secretModal['\u0073\u0074\u0079\u006C\u0065']['\u0064\u0069\u0073\u0070\u006C\u0061\u0079']==="\u0066\u006C\u0065\u0078")return;vibrate(677759^677739);if(scene===(288682^288683)){step++;if(step<introImages['\u006C\u0065\u006E\u0067\u0074\u0068']){bg['\u0073\u0072\u0063']=introImages[step];if(step===(978435^978437))setupHug();}}else if(scene===(631209^631210)){tapCount++;scene3Taps++;if(scene3Taps>=(395447^395445)){hintBubble['\u0073\u0074\u0079\u006C\u0065']['\u006F\u0070\u0061\u0063\u0069\u0074\u0079']="\u0030";setTimeout(()=>{hintBubble['\u0073\u0074\u0079\u006C\u0065']['\u0076\u0069\u0073\u0069\u0062\u0069\u006C\u0069\u0074\u0079']="\u0068\u0069\u0064\u0064\u0065\u006E";},543402^543582);}if(tapCount===(843108^843121)){vibrate([687482^687442,232563^232471,494643^494619]);openModal();}else{if(tapCount<=msgPool['\u006C\u0065\u006E\u0067\u0074\u0068']){bg['\u0073\u0072\u0063']=msgPool[tapCount-(829699^829698)];}else{bg['\u0073\u0072\u0063']=msgPool[Math['\u0066\u006C\u006F\u006F\u0072'](Math['\u0072\u0061\u006E\u0064\u006F\u006D']()*msgPool['\u006C\u0065\u006E\u0067\u0074\u0068'])];}}}});function openModal(){secretModal['\u0073\u0074\u0079\u006C\u0065']['\u0064\u0069\u0073\u0070\u006C\u0061\u0079']="xelf".split("").reverse().join("");}function closeModal(){vibrate(454738^454749);secretModal['\u0073\u0074\u0079\u006C\u0065']['\u0064\u0069\u0073\u0070\u006C\u0061\u0079']="enon".split("").reverse().join("");tapCount=737513^737513;}function setupHug(){scene=671216^671218;hint['\u0069\u006E\u006E\u0065\u0072\u0054\u0065\u0078\u0074']="\u0068\u006F\u006C\u0064\u0020\u0074\u006F\u0020\u0068\u0075\u0067";progressContainer['\u0073\u0074\u0079\u006C\u0065']['\u0064\u0069\u0073\u0070\u006C\u0061\u0079']="\u0062\u006C\u006F\u0063\u006B";window['\u0061\u0064\u0064\u0045\u0076\u0065\u006E\u0074\u004C\u0069\u0073\u0074\u0065\u006E\u0065\u0072']("\u0070\u006F\u0069\u006E\u0074\u0065\u0072\u0064\u006F\u0077\u006E",holdStart);window['\u0061\u0064\u0064\u0045\u0076\u0065\u006E\u0074\u004C\u0069\u0073\u0074\u0065\u006E\u0065\u0072']("\u0070\u006F\u0069\u006E\u0074\u0065\u0072\u0075\u0070",holdEnd);window['\u0061\u0064\u0064\u0045\u0076\u0065\u006E\u0074\u004C\u0069\u0073\u0074\u0065\u006E\u0065\u0072']("\u0070\u006F\u0069\u006E\u0074\u0065\u0072\u006C\u0065\u0061\u0076\u0065",holdEnd);window['\u0061\u0064\u0064\u0045\u0076\u0065\u006E\u0074\u004C\u0069\u0073\u0074\u0065\u006E\u0065\u0072']("lecnacretniop".split("").reverse().join(""),holdEnd);}function holdStart(e){if(scene!==(715235^715233))return;e['\u0070\u0072\u0065\u0076\u0065\u006E\u0074\u0044\u0065\u0066\u0061\u0075\u006C\u0074']();if(holding)return;holding=!![];hint['\u0069\u006E\u006E\u0065\u0072\u0054\u0065\u0078\u0074']="\u0068\u0075\u0067\u0067\u0069\u006E\u0067\u0020\u0079\u006F\u0075\u002E\u002E\u002E";if(navigator['\u0076\u0069\u0062\u0072\u0061\u0074\u0065']){navigator['\u0076\u0069\u0062\u0072\u0061\u0074\u0065']([814521^814481,112101^112089,980115^980155,177960^177848,145154^145194,902017^902077,853853^853877,662138^662506,813022^813046,526894^526866,918052^918028,207390^207758,787943^787919,318164^318184,931963^931923,741808^741408,319660^319620,368599^368619,201624^201648,781214^780814,386185^386209,381137^381165,968019^968059,187945^188345,328114^328090,381482^381462,335848^335808,133689^134057]);}interval=setInterval(()=>{if(!holding)return;progress+=524493^524492;progressBar['\u0073\u0074\u0079\u006C\u0065']['\u0077\u0069\u0064\u0074\u0068']=progress+"\u0025";spawnHeart();if(progress%(331227^331217)===(311590^311590))vibrate(277476^277501);if(progress>=(924104^924076))finishHug();},564957^564975);}function holdEnd(){if(scene!==(699725^699727))return;holding=false;clearInterval(interval);if(navigator['\u0076\u0069\u0062\u0072\u0061\u0074\u0065'])navigator['\u0076\u0069\u0062\u0072\u0061\u0074\u0065'](322677^322677);if(progress<(996423^996387)){progress=926223^926223;progressBar['\u0073\u0074\u0079\u006C\u0065']['\u0077\u0069\u0064\u0074\u0068']="\u0030\u0025";hint['\u0069\u006E\u006E\u0065\u0072\u0054\u0065\u0078\u0074']="\u0064\u006F\u006E\u0027\u0074\u0020\u006C\u0065\u0074\u0020\u0067\u006F\u0020\u0079\u0065\u0074\u0021\u0020\u003A\u0028";vibrate(443328^443388);}}function finishHug(){holding=false;clearInterval(interval);window['\u0072\u0065\u006D\u006F\u0076\u0065\u0045\u0076\u0065\u006E\u0074\u004C\u0069\u0073\u0074\u0065\u006E\u0065\u0072']("\u0070\u006F\u0069\u006E\u0074\u0065\u0072\u0064\u006F\u0077\u006E",holdStart);window['\u0072\u0065\u006D\u006F\u0076\u0065\u0045\u0076\u0065\u006E\u0074\u004C\u0069\u0073\u0074\u0065\u006E\u0065\u0072']("\u0070\u006F\u0069\u006E\u0074\u0065\u0072\u0075\u0070",holdEnd);vibrate([961511^961529,984533^984387,930109^930083]);hint['\u0069\u006E\u006E\u0065\u0072\u0054\u0065\u0078\u0074']="\u0068\u0065\u0068\u0065\u0020\u0074\u0068\u0061\u0074\u0020\u0066\u0065\u006C\u0074\u0020\u006E\u0069\u0063\u0065\u002E\u0020\u0074\u0068\u0061\u006E\u006B\u0020\u0079\u006F\u0075\u0020\u003A\u0029";setTimeout(()=>{flashOverlay['\u0073\u0074\u0079\u006C\u0065']['\u006F\u0070\u0061\u0063\u0069\u0074\u0079']="\u0031";setTimeout(()=>{scene=264150^264149;progressContainer['\u0073\u0074\u0079\u006C\u0065']['\u0064\u0069\u0073\u0070\u006C\u0061\u0079']="enon".split("").reverse().join("");bg['\u0073\u0072\u0063']="\u0061\u0073\u0073\u0065\u0074\u0073\u002F\u0073\u0063\u0065\u006E\u0065\u0032\u002F\u006D\u0073\u0067\u002E\u0070\u006E\u0067";hint['\u0069\u006E\u006E\u0065\u0072\u0054\u0065\u0078\u0074']="\u0074\u0061\u0070\u0020\u0066\u006F\u0072\u0020\u006D\u006F\u0072\u0065\u0020\u003A\u0029";startConfetti();setTimeout(()=>{flashOverlay['\u0073\u0074\u0079\u006C\u0065']['\u006F\u0070\u0061\u0063\u0069\u0074\u0079']="\u0030";},957486^957514);},713803^713905);},237290^236722);}function spawnHeart(){if(Math['\u0072\u0061\u006E\u0064\u006F\u006D']()>0.15)return;var _0xd2d1cg=(636241^636240)+(393610^393608);const _0x7fdbbg=document['\u0063\u0072\u0065\u0061\u0074\u0065\u0045\u006C\u0065\u006D\u0065\u006E\u0074']("vid".split("").reverse().join(""));_0xd2d1cg="hmmokd".split("").reverse().join("");_0x7fdbbg['\u0063\u006C\u0061\u0073\u0073\u004E\u0061\u006D\u0065']="\u0068\u0065\u0061\u0072\u0074";_0x7fdbbg['\u0069\u006E\u006E\u0065\u0072\u0054\u0065\u0078\u0074']="\uFE0F\u2764".split("").reverse().join("");_0x7fdbbg['\u0073\u0074\u0079\u006C\u0065']['\u006C\u0065\u0066\u0074']=Math['\u0072\u0061\u006E\u0064\u006F\u006D']()*(491370^491330)+(874461^874435)+"\u0025";container['\u0061\u0070\u0070\u0065\u006E\u0064\u0043\u0068\u0069\u006C\u0064'](_0x7fdbbg);setTimeout(()=>_0x7fdbbg['\u0072\u0065\u006D\u006F\u0076\u0065'](),777600^776284);}function startConfetti(){for(let i=844579^844579;i<(171821^171833);i++)spawnConfetti();setInterval(spawnConfetti,733393^733365);}function spawnConfetti(){const _0xcgc2d=["\u0023\u0066\u0066\u0062\u0037\u0062\u0032","1cadff#".split("").reverse().join(""),"bc0f2e#".split("").reverse().join(""),"\u0023\u0062\u0035\u0065\u0061\u0064\u0037","\u0023\u0063\u0037\u0063\u0065\u0065\u0061","\u0023\u0066\u0066\u0066\u0034\u0062\u0064"];var _0x9db9a=(447066^447066)+(166599^166593);const _0xc12aca=document['\u0063\u0072\u0065\u0061\u0074\u0065\u0045\u006C\u0065\u006D\u0065\u006E\u0074']("vid".split("").reverse().join(""));_0x9db9a=(173163^173162)+(866964^866967);_0xc12aca['\u0063\u006C\u0061\u0073\u0073\u004E\u0061\u006D\u0065']="\u0063\u006F\u006E\u0066\u0065\u0074\u0074\u0069";_0xc12aca['\u0073\u0074\u0079\u006C\u0065']['\u006C\u0065\u0066\u0074']=Math['\u0072\u0061\u006E\u0064\u006F\u006D']()*(584366^584394)+"\u0025";_0xc12aca['\u0073\u0074\u0079\u006C\u0065']['\u0062\u0061\u0063\u006B\u0067\u0072\u006F\u0075\u006E\u0064\u0043\u006F\u006C\u006F\u0072']=_0xcgc2d[Math['\u0066\u006C\u006F\u006F\u0072'](Math['\u0072\u0061\u006E\u0064\u006F\u006D']()*_0xcgc2d['\u006C\u0065\u006E\u0067\u0074\u0068'])];var _0x_0x9e6=(597330^597329)+(766737^766744);const _0x531d=Math['\u0072\u0061\u006E\u0064\u006F\u006D']()*2.5+2.5+"\u0073";_0x_0x9e6=(965769^965771)+(568662^568663);const _0xgaa=Math['\u0072\u0061\u006E\u0064\u006F\u006D']()*0.5+0.5+"\u0073";_0xc12aca['\u0073\u0074\u0079\u006C\u0065']['\u0061\u006E\u0069\u006D\u0061\u0074\u0069\u006F\u006E\u0044\u0075\u0072\u0061\u0074\u0069\u006F\u006E']=`${_0x531d}, ${_0xgaa}`;_0xc12aca['\u0073\u0074\u0079\u006C\u0065']['\u006F\u0070\u0061\u0063\u0069\u0074\u0079']=Math['\u0072\u0061\u006E\u0064\u006F\u006D']()*0.5+0.5;document['\u0062\u006F\u0064\u0079']['\u0061\u0070\u0070\u0065\u006E\u0064\u0043\u0068\u0069\u006C\u0064'](_0xc12aca);setTimeout(()=>_0xc12aca['\u0072\u0065\u006D\u006F\u0076\u0065'](),847299^851531);}</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>For Nura 🎂</title>
+
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fdf6e3;
+  overflow: hidden;
+  touch-action: none;
+  font-family: "Marker Felt", "Bradley Hand ITC", "Comic Sans MS", cursive;
+}
+
+.main-container {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  aspect-ratio: 1024 / 540;
+}
+
+#secretModal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 20px;
+  touch-action: auto;
+}
+
+.modal-content {
+  position: relative;
+  width: 100%;
+  max-width: 450px;
+  max-height: 80vh; 
+  background: #fff9f0;
+  border-radius: 12px;
+  padding: 25px;
+  border: 3px solid #ffb7b2;
+  overflow-y: auto; 
+  -webkit-overflow-scrolling: touch;
+}
+
+.close-btn {
+  position: sticky;
+  top: 0;
+  float: right;
+  width: 35px;
+  height: 35px;
+  background: #ffb7b2;
+  color: white;
+  border: 2px solid #5d4037;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 110;
+  margin-top: -10px;
+  margin-right: -10px;
+}
+
+.letter-p {
+  font-size: 15px;
+  text-align: left;
+  text-indent: 35px; 
+  margin-bottom: 15px;
+}
+
+#flashOverlay {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: #ffecd2; 
+  opacity: 0;
+  pointer-events: none;
+  z-index: 200; /* High z-index to cover everything */
+  transition: opacity 0.25s ease-in-out; /* Faster flash */
+}
+
+.confetti {
+  position: absolute;
+  width: 10px; height: 10px;
+  top: -20px; z-index: 15;
+  border-radius: 2px;
+  animation: fall linear forwards, swing ease-in-out infinite alternate;
+}
+
+.heart {
+  position: absolute;
+  bottom: 25%;
+  font-size: 20px;
+  z-index: 12;
+  pointer-events: none;
+  animation: floatUp 1.5s ease-out forwards;
+}
+
+@keyframes fall { to { transform: translateY(110vh) rotate(720deg); } }
+@keyframes swing { from { margin-left: -20px; } to { margin-left: 20px; } }
+@keyframes floatUp {
+  0% { transform: translateY(0) scale(1); opacity: 1; }
+  100% { transform: translateY(-150px) scale(1.5); opacity: 0; }
+}
+
+.scene-img { 
+  width: 100%; height: 100%; display: block; object-fit: contain;
+  user-select: none; -webkit-user-drag: none; pointer-events: none;
+}
+
+.bottom-hint {
+  position: absolute;
+  bottom: 2%; left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  background: rgba(0, 0, 0, 0.6); 
+  padding: 4px 12px; border-radius: 4px; 
+  z-index: 10;
+  transition: opacity 0.5s ease;
+}
+
+.hint-text { font-size: 16px; color: #fff; font-weight: bold; white-space: nowrap; }
+
+.progress-container {
+  position: absolute;
+  bottom: 18%; 
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%; height: 18px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 20px;
+  border: 2px solid #5d4037;
+  display: none; overflow: hidden; z-index: 5;
+}
+
+.progress-bar {
+  height: 100%; width: 0%;
+  background-color: #ffb7b2;
+  background-image: linear-gradient(45deg, rgba(255,255,255,0.3) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.3) 75%, transparent 75%, transparent);
+  background-size: 30px 30px;
+  animation: moveStripes 1s linear infinite;
+  transition: width 0.1s linear;
+}
+
+@keyframes moveStripes { from { background-position: 0 0; } to { background-position: 30px 0; } }
+</style>
+</head>
+
+<body>
+
+<div class="main-container" id="mainContainer">
+  <div id="secretModal">
+    <div class="modal-content">
+      <div class="close-btn" onclick="closeModal()">X</div>
+      <div style="color: #5d4037; line-height: 1.6;">
+        <h4 style="margin-bottom: 5px; color: #ffb7b2; font-size: 13px; text-align: center;">
+          aweee you kept on going.. and found this🥺 by tapping 21 times!! thank you!
+        </h4>
+        <h2 style="margin-bottom: 20px; color: #5d4037; text-align: center; font-size: 22px;">To my dear friend...</h2>
+        
+        <p class="letter-p">
+          Haiii Al Nura!!! I’m really glad I got to celebrate your birthday with you through this little project, even if just for a while :) . I’m just really happy I could make something like this for someone as kind and supportive as youuu.
+        </p>
+        
+        <p class="letter-p">
+          I’m always wishing you the best in everythinggg ✨ and please know that I’m supporting you from afar and rooting for your happiness every single day😊. You deserve all the good things that come your way. Stay precious and amazing! 💖
+        </p>
+        
+        <p style="margin-top: 15px; text-align: right; font-weight: bold; font-size: 18px;">— Mark</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="flashOverlay"></div>
+  <img id="bg" class="scene-img" src="assets/scene1/intro0.png">
+  <div class="progress-container" id="progressContainer"><div class="progress-bar" id="progressBar"></div></div>
+  <div id="hintBubble" class="bottom-hint"><div id="hint" class="hint-text">tap me :)</div></div>
+</div>
+
+<script>
+const container = document.getElementById("mainContainer");
+const bg = document.getElementById("bg");
+const hint = document.getElementById("hint");
+const hintBubble = document.getElementById("hintBubble");
+const progressContainer = document.getElementById("progressContainer");
+const progressBar = document.getElementById("progressBar");
+const flashOverlay = document.getElementById("flashOverlay");
+const secretModal = document.getElementById("secretModal");
+
+let scene = 1;
+let step = 0;
+let progress = 0;
+let interval = null;
+let holding = false;
+let tapCount = 0;
+let scene3Taps = 0;
+
+const introImages = ["assets/scene1/intro0.png", "assets/scene1/intro1.png", "assets/scene1/intro2.png", "assets/scene1/intro3.png", "assets/scene1/intro4.png", "assets/scene1/intro5.png", "assets/scene1/intro6.png"];
+const msgPool = ["assets/scene2/msg.png", "assets/scene2/msg1.png", "assets/scene2/msg2.png", "assets/scene2/msg3.png", "assets/scene2/msg4.png", "assets/scene2/msg5.png", "assets/scene2/msg6.png", "assets/scene2/msg7.png", "assets/scene2/msg8.png"];
+
+function vibrate(ms = 25) {
+  if (navigator.vibrate) {
+    try { navigator.vibrate(ms); } catch (e) {}
+  }
+}
+
+document.body.addEventListener("click", (e) => {
+  if (secretModal.style.display === "flex") return;
+  
+  vibrate(20); 
+
+  if (scene === 1) {
+    step++;
+    if (step < introImages.length) {
+      bg.src = introImages[step];
+      if (step === 6) setupHug();
+    }
+  } else if (scene === 3) {
+    tapCount++;
+    scene3Taps++;
+
+    if (scene3Taps >= 2) {
+      hintBubble.style.opacity = "0";
+      setTimeout(() => { hintBubble.style.visibility = "hidden"; }, 500);
+    }
+
+    if (tapCount === 21) {
+      vibrate([40, 100, 40]); 
+      openModal();
+    } else {
+      // NEW LOGIC: Show 0-8 in order first, then randomize
+      if (tapCount <= msgPool.length) {
+        // This shows msg.png, then msg1.png, then msg2.png, etc.
+        bg.src = msgPool[tapCount - 1];
+      } else {
+        // Once all have been seen once, start randomizing
+        bg.src = msgPool[Math.floor(Math.random() * msgPool.length)];
+      }
+    }
+  }
+});
+
+function openModal() {
+  secretModal.style.display = "flex";
+}
+
+function closeModal() {
+  vibrate(15);
+  secretModal.style.display = "none";
+  tapCount = 0; 
+}
+
+function setupHug() {
+  scene = 2;
+  hint.innerText = "hold to hug";
+  progressContainer.style.display = "block";
+  window.addEventListener("pointerdown", holdStart);
+  window.addEventListener("pointerup", holdEnd);
+  window.addEventListener("pointerleave", holdEnd);
+  window.addEventListener("pointercancel", holdEnd);
+}
+
+function holdStart(e) {
+  if (scene !== 2) return;
+  e.preventDefault();
+  if (holding) return;
+  holding = true;
+  hint.innerText = "hugging you...";
+  
+  // Heartbeat pattern updated to last longer for the 5-second duration
+  if (navigator.vibrate) {
+    navigator.vibrate([40, 60, 40, 400, 40, 60, 40, 400, 40, 60, 40, 400, 40, 60, 40, 400, 40, 60, 40, 400, 40, 60, 40, 400, 40, 60, 40, 400]);
+  }
+
+  interval = setInterval(() => {
+    if (!holding) return;
+    progress += 1; // CHANGED FROM 2 TO 1 TO MAKE IT 5 SECONDS TOTAL
+    progressBar.style.width = progress + "%";
+    spawnHeart();
+    
+    // Heartbeat haptics triggered every 10% for a consistent feel
+    if (progress % 10 === 0) vibrate(25);
+
+    if (progress >= 100) finishHug();
+  }, 50); // 50ms * 100 steps = 5000ms (5 seconds)
+}
+
+function holdEnd() {
+  if (scene !== 2) return;
+  holding = false;
+  clearInterval(interval);
+  if (navigator.vibrate) navigator.vibrate(0);
+  if (progress < 100) {
+    progress = 0;
+    progressBar.style.width = "0%";
+    hint.innerText = "don't let go yet! :(";
+    vibrate(60);
+  }
+}
+
+function finishHug() {
+  holding = false;
+  clearInterval(interval);
+  window.removeEventListener("pointerdown", holdStart);
+  window.removeEventListener("pointerup", holdEnd);
+  
+  vibrate([30, 150, 30]); 
+  hint.innerText = "hehe that felt nice. thank you :)";
+
+  // SNAPPY TRANSITION LOGIC
+  setTimeout(() => {
+    flashOverlay.style.opacity = "1";
+    
+    // Swap image IMMEDIATELY while screen is white
+    setTimeout(() => {
+      scene = 3;
+      progressContainer.style.display = "none";
+      bg.src = "assets/scene2/msg.png";
+      hint.innerText = "tap for more :)";
+      startConfetti();
+      
+      // Wait a tiny bit then fade out white overlay
+      setTimeout(() => {
+        flashOverlay.style.opacity = "0";
+      }, 100); 
+    }, 250); 
+  }, 600); 
+}
+
+function spawnHeart() {
+  if (Math.random() > 0.15) return; 
+  const heart = document.createElement('div');
+  heart.className = 'heart';
+  heart.innerText = '❤️';
+  heart.style.left = (Math.random() * 40 + 30) + '%';
+  container.appendChild(heart);
+  setTimeout(() => heart.remove(), 1500);
+}
+
+function startConfetti() {
+  for(let i=0; i<20; i++) spawnConfetti();
+  setInterval(spawnConfetti, 100);
+}
+
+function spawnConfetti() {
+  const colors = ['#ffb7b2', '#ffdac1', '#e2f0cb', '#b5ead7', '#c7ceea', '#fff4bd'];
+  const confetti = document.createElement('div');
+  confetti.className = 'confetti';
+  confetti.style.left = Math.random() * 100 + '%';
+  confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+  const fallDuration = (Math.random() * 2.5 + 2.5) + 's';
+  const swingDuration = (Math.random() * 0.5 + 0.5) + 's';
+  confetti.style.animationDuration = `${fallDuration}, ${swingDuration}`;
+  confetti.style.opacity = Math.random() * 0.5 + 0.5;
+  document.body.appendChild(confetti); 
+  setTimeout(() => confetti.remove(), 5000);
+}
+</script>
+</body>
+</html>
