@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>For Nura 🎂</title>
+
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fdf6e3;
+  overflow: hidden;
+  touch-action: none;
+  font-family: "Marker Felt", "Bradley Hand ITC", "Comic Sans MS", cursive;
+}
+
+.main-container {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  aspect-ratio: 1024 / 540;
+  overflow: hidden; 
+}
+
+/* MODAL FIX: Ensuring it fits small screens */
+#secretModal {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 15px;
+}
+
+.modal-content {
+  position: relative;
+  width: 100%;
+  max-width: 450px;
+  max-height: 85vh; /* Prevents it from touching top/bottom of screen */
+  background: #fff9f0;
+  border-radius: 12px;
+  padding: 20px;
+  border: 3px solid #ffb7b2;
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+  overflow-y: auto; /* This allows scrolling if the text is too long */
+  -webkit-overflow-scrolling: touch; /* Smooth scroll for iPhones */
+}
+
+.close-btn {
+  position: sticky;
+  top: 0;
+  float: right;
+  width: 32px;
+  height: 32px;
+  background: #ffb7b2;
+  color: white;
+  border: 2px solid #5d4037;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 110;
+  margin-top: -10px;
+  margin-right: -10px;
+}
+
+#flashOverlay {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: #ffecd2; 
+  opacity: 0;
+  pointer-events: none;
+  z-index: 25;
+  transition: opacity 0.4s ease-in-out;
+}
+
+.confetti {
+  position: absolute;
+  width: 10px; height: 10px;
+  top: -20px; z-index: 15;
+  border-radius: 2px;
+  animation: fall linear forwards, swing ease-in-out infinite alternate;
+}
+
+.heart {
+  position: absolute;
+  bottom: 15%;
+  font-size: 20px;
+  z-index: 12;
+  pointer-events: none;
+  animation: floatUp 1.5s ease-out forwards;
+}
+
+@keyframes fall { to { transform: translateY(110vh) rotate(720deg); } }
+@keyframes swing { from { margin-left: -20px; } to { margin-left: 20px; } }
+@keyframes floatUp {
+  0% { transform: translateY(0) scale(1); opacity: 1; }
+  100% { transform: translateY(-150px) scale(1.5); opacity: 0; }
+}
+
+.scene-img { 
+  width: 100%; height: 100%; display: block; object-fit: contain;
+  user-select: none; -webkit-user-drag: none; pointer-events: none;
+}
+
+.bottom-hint {
+  position: absolute;
+  bottom: 2%; left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  background: rgba(0, 0, 0, 0.6); 
+  padding: 4px 12px; border-radius: 4px; 
+  z-index: 10;
+  transition: opacity 0.8s ease, visibility 0.8s;
+}
+
+.hint-text { font-size: 16px; color: #fff; font-weight: bold; white-space: nowrap; }
+
+.progress-container {
+  position: absolute;
+  bottom: 10%; left: 50%;
+  transform: translateX(-50%);
+  width: 60%; height: 16px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 20px;
+  border: 2px solid #5d4037;
+  display: none; overflow: hidden; z-index: 5;
+}
+
+.progress-bar {
+  height: 100%; width: 0%;
+  background-color: #ffb7b2;
+  background-image: linear-gradient(45deg, rgba(255,255,255,0.3) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.3) 75%, transparent 75%, transparent);
+  background-size: 30px 30px;
+  animation: moveStripes 1s linear infinite;
+  transition: width 0.1s linear;
+}
+
+@keyframes moveStripes { from { background-position: 0 0; } to { background-position: 30px 0; } }
+</style>
+</head>
+
+<body>
+
+<div class="main-container" id="mainContainer">
+  <div id="secretModal">
+    <div class="modal-content">
+      <div class="close-btn" onclick="closeModal()">X</div>
+      
+      <!-- MESSAGE AREA -->
+      <div style="color: #5d4037; line-height: 1.5;">
+        <h4 style="margin-bottom: 4px; color: #ffb7b2; font-size: 13px; text-align: center;">
+          awesome!! you found the easter egg by tapping 21 times!!
+        </h4>
+        <h2 style="margin-bottom: 15px; color: #5d4037; text-align: center; font-size: 20px;">To my dear friend...</h2>
+        
+        <p style="font-size: 15px; margin-bottom: 10px; text-align: left;">
+          Haiii Al Nura!!! I’m really glad I got to celebrate your birthday with you through this little project, even if just for a while :) . I’m just really happy I could make something like this for someone as kind and supportive as youuu.
+        </p>
+        
+        <p style="font-size: 15px; text-align: left;">
+          I’m always wishing you the best in everythinggg ✨ and please know that I’m supporting you from afar and rooting for your happiness every single day😊. You deserve all the good things that come your way. Stay precious and amazing! 💖
+        </p>
+        
+        <p style="margin-top: 15px; text-align: right; font-weight: bold; font-size: 16px;">— Mark</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="flashOverlay"></div>
+  <img id="bg" class="scene-img" src="assets/scene1/intro0.png">
+  <div class="progress-container" id="progressContainer"><div class="progress-bar" id="progressBar"></div></div>
+  <div id="hintBubble" class="bottom-hint"><div id="hint" class="hint-text">tap me :)</div></div>
+</div>
+
+<script>
+const container = document.getElementById("mainContainer");
+const bg = document.getElementById("bg");
+const hint = document.getElementById("hint");
+const hintBubble = document.getElementById("hintBubble");
+const progressContainer = document.getElementById("progressContainer");
+const progressBar = document.getElementById("progressBar");
+const flashOverlay = document.getElementById("flashOverlay");
+const secretModal = document.getElementById("secretModal");
+
+let scene = 1;
+let step = 0;
+let progress = 0;
+let interval = null;
+let holding = false;
+let tapCount = 0;
+
+const introImages = ["assets/scene1/intro0.png", "assets/scene1/intro1.png", "assets/scene1/intro2.png", "assets/scene1/intro3.png", "assets/scene1/intro4.png", "assets/scene1/intro5.png", "assets/scene1/intro6.png"];
+const msgPool = ["assets/scene2/msg.png", "assets/scene2/msg1.png", "assets/scene2/msg2.png", "assets/scene2/msg3.png", "assets/scene2/msg4.png", "assets/scene2/msg5.png", "assets/scene2/msg6.png", "assets/scene2/msg7.png", "assets/scene2/msg8.png"];
+
+document.body.addEventListener("click", (e) => {
+  if (secretModal.style.display === "flex") return;
+
+  if (scene === 1) {
+    step++;
+    if (step < introImages.length) {
+      bg.src = introImages[step];
+      if (step === 6) setupHug();
+    }
+  } else if (scene === 3) {
+    tapCount++;
+    if (tapCount === 21) {
+      openModal();
+    } else {
+      bg.src = msgPool[Math.floor(Math.random() * msgPool.length)];
+    }
+    hintBubble.style.opacity = "0";
+    hintBubble.style.visibility = "hidden";
+  }
+});
+
+function openModal() {
+  secretModal.style.display = "flex";
+}
+
+function closeModal() {
+  secretModal.style.display = "none";
+  tapCount = 0; 
+}
+
+function setupHug() {
+  scene = 2;
+  hint.innerText = "hold to hug";
+  progressContainer.style.display = "block";
+  window.addEventListener("pointerdown", holdStart);
+  window.addEventListener("pointerup", holdEnd);
+  window.addEventListener("pointerleave", holdEnd);
+  window.addEventListener("pointercancel", holdEnd);
+}
+
+function holdStart(e) {
+  if (scene !== 2) return;
+  e.preventDefault();
+  if (holding) return;
+  holding = true;
+  hint.innerText = "hugging you...";
+  interval = setInterval(() => {
+    if (!holding) return;
+    progress += 2;
+    progressBar.style.width = progress + "%";
+    spawnHeart();
+    if (progress >= 100) finishHug();
+  }, 50);
+}
+
+function holdEnd() {
+  if (scene !== 2) return;
+  holding = false;
+  clearInterval(interval);
+  if (progress < 100) {
+    progress = 0;
+    progressBar.style.width = "0%";
+    hint.innerText = "don't let go yet! :(";
+  }
+}
+
+function finishHug() {
+  holding = false;
+  clearInterval(interval);
+  window.removeEventListener("pointerdown", holdStart);
+  window.removeEventListener("pointerup", holdEnd);
+  window.removeEventListener("pointerleave", holdEnd);
+  window.removeEventListener("pointercancel", holdEnd);
+  hint.innerText = "hehe thank you :)";
+
+  setTimeout(() => {
+    flashOverlay.style.opacity = "1";
+    setTimeout(() => {
+      scene = 3;
+      progressContainer.style.display = "none";
+      bg.src = "assets/scene2/msg.png";
+      hint.innerText = "tap for more :)";
+      flashOverlay.style.opacity = "0";
+      startConfetti();
+    }, 500);
+  }, 1000);
+}
+
+function spawnHeart() {
+  if (Math.random() > 0.15) return; 
+  const heart = document.createElement('div');
+  heart.className = 'heart';
+  heart.innerText = '❤️';
+  heart.style.left = (Math.random() * 40 + 30) + '%';
+  container.appendChild(heart);
+  setTimeout(() => heart.remove(), 1500);
+}
+
+function startConfetti() {
+  for(let i=0; i<20; i++) spawnConfetti();
+  setInterval(spawnConfetti, 100);
+}
+
+function spawnConfetti() {
+  const colors = ['#ffb7b2', '#ffdac1', '#e2f0cb', '#b5ead7', '#c7ceea', '#fff4bd'];
+  const confetti = document.createElement('div');
+  confetti.className = 'confetti';
+  confetti.style.left = Math.random() * 100 + '%';
+  confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+  const fallDuration = (Math.random() * 2.5 + 2.5) + 's';
+  const swingDuration = (Math.random() * 0.5 + 0.5) + 's';
+  confetti.style.animationDuration = `${fallDuration}, ${swingDuration}`;
+  confetti.style.opacity = Math.random() * 0.5 + 0.5;
+  container.appendChild(confetti);
+  setTimeout(() => confetti.remove(), 5000);
+}
+</script>
+</body>
+</html>
