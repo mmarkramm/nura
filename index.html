@@ -76,7 +76,7 @@ body {
 .letter-p {
   font-size: 15px;
   text-align: left;
-  text-indent: 35px; /* Indentation for the paragraphs */
+  text-indent: 35px; 
   margin-bottom: 15px;
 }
 
@@ -88,7 +88,7 @@ body {
   opacity: 0;
   pointer-events: none;
   z-index: 25;
-  transition: opacity 0.4s ease-in-out;
+  transition: opacity 0.3s ease-in-out; /* Slightly faster transition */
 }
 
 .confetti {
@@ -135,7 +135,7 @@ body {
 
 .progress-container {
   position: absolute;
-  bottom: 18%; /* Raised higher for phone testing */
+  bottom: 18%; 
   left: 50%;
   transform: translateX(-50%);
   width: 60%; height: 18px;
@@ -210,19 +210,16 @@ let scene3Taps = 0;
 const introImages = ["assets/scene1/intro0.png", "assets/scene1/intro1.png", "assets/scene1/intro2.png", "assets/scene1/intro3.png", "assets/scene1/intro4.png", "assets/scene1/intro5.png", "assets/scene1/intro6.png"];
 const msgPool = ["assets/scene2/msg.png", "assets/scene2/msg1.png", "assets/scene2/msg2.png", "assets/scene2/msg3.png", "assets/scene2/msg4.png", "assets/scene2/msg5.png", "assets/scene2/msg6.png", "assets/scene2/msg7.png", "assets/scene2/msg8.png"];
 
-// IMPROVED HAPTIC FUNCTION
 function vibrate(ms = 25) {
   if (navigator.vibrate) {
-    try {
-      navigator.vibrate(ms);
-    } catch (e) { console.log("Haptics blocked"); }
+    try { navigator.vibrate(ms); } catch (e) {}
   }
 }
 
 document.body.addEventListener("click", (e) => {
   if (secretModal.style.display === "flex") return;
   
-  vibrate(20); // Firm vibration for every tap
+  vibrate(20); 
 
   if (scene === 1) {
     step++;
@@ -231,6 +228,7 @@ document.body.addEventListener("click", (e) => {
       if (step === 6) setupHug();
     }
   } else if (scene === 3) {
+    // START COUNTING ONLY IN SCENE 3
     tapCount++;
     scene3Taps++;
 
@@ -240,7 +238,7 @@ document.body.addEventListener("click", (e) => {
     }
 
     if (tapCount === 21) {
-      vibrate([40, 100, 40]); // Double pulse for the secret
+      vibrate([40, 100, 40]); 
       openModal();
     } else {
       bg.src = msgPool[Math.floor(Math.random() * msgPool.length)];
@@ -275,7 +273,6 @@ function holdStart(e) {
   holding = true;
   hint.innerText = "hugging you...";
   
-  // Heartbeat pattern: th-thump... th-thump...
   if (navigator.vibrate) {
     navigator.vibrate([40, 60, 40, 400, 40, 60, 40, 400, 40, 60, 40, 400, 40, 60, 40, 400]);
   }
@@ -285,10 +282,7 @@ function holdStart(e) {
     progress += 2;
     progressBar.style.width = progress + "%";
     spawnHeart();
-    
-    // Safety pulse every 20%
     if (progress % 20 === 0) vibrate(25);
-
     if (progress >= 100) finishHug();
   }, 50);
 }
@@ -297,13 +291,12 @@ function holdEnd() {
   if (scene !== 2) return;
   holding = false;
   clearInterval(interval);
-  if (navigator.vibrate) navigator.vibrate(0); // Kill vibration immediately
-  
+  if (navigator.vibrate) navigator.vibrate(0);
   if (progress < 100) {
     progress = 0;
     progressBar.style.width = "0%";
     hint.innerText = "don't let go yet! :(";
-    vibrate(60); // Feedback for failing the hug
+    vibrate(60);
   }
 }
 
@@ -314,9 +307,11 @@ function finishHug() {
   window.removeEventListener("pointerup", holdEnd);
   window.removeEventListener("pointerleave", holdEnd);
   window.removeEventListener("pointercancel", holdEnd);
-  hint.innerText = "hehe thank you :)";
+  
   vibrate([30, 150, 30]); 
+  hint.innerText = "hehe thank you :)";
 
+  // TRIGGER FLASH FASTER
   setTimeout(() => {
     flashOverlay.style.opacity = "1";
     setTimeout(() => {
@@ -326,8 +321,8 @@ function finishHug() {
       hint.innerText = "tap for more :)";
       flashOverlay.style.opacity = "0";
       startConfetti();
-    }, 500);
-  }, 1000);
+    }, 400); // 100ms faster transition
+  }, 600); // Trigger 400ms earlier
 }
 
 function spawnHeart() {
