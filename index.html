@@ -73,6 +73,14 @@ body {
   margin-right: -10px;
 }
 
+/* INDENTATION STYLE */
+.letter-p {
+  font-size: 15px;
+  text-align: left;
+  text-indent: 30px; /* This adds the space at the start of the first sentence */
+  margin-bottom: 12px;
+}
+
 #flashOverlay {
   position: absolute;
   top: 0; left: 0;
@@ -163,11 +171,11 @@ body {
         </h4>
         <h2 style="margin-bottom: 15px; color: #5d4037; text-align: center; font-size: 20px;">To my dear friend...</h2>
         
-        <p style="font-size: 15px; margin-bottom: 10px; text-align: left;">
+        <p class="letter-p">
           Haiii Al Nura!!! I’m really glad I got to celebrate your birthday with you through this little project, even if just for a while :) . I’m just really happy I could make something like this for someone as kind and supportive as youuu.
         </p>
         
-        <p style="font-size: 15px; text-align: left;">
+        <p class="letter-p">
           I’m always wishing you the best in everythinggg ✨ and please know that I’m supporting you from afar and rooting for your happiness every single day😊. You deserve all the good things that come your way. Stay precious and amazing! 💖
         </p>
         
@@ -198,7 +206,7 @@ let progress = 0;
 let interval = null;
 let holding = false;
 let tapCount = 0;
-let scene3Taps = 0; // Track taps specifically in scene 3
+let scene3Taps = 0;
 
 const introImages = ["assets/scene1/intro0.png", "assets/scene1/intro1.png", "assets/scene1/intro2.png", "assets/scene1/intro3.png", "assets/scene1/intro4.png", "assets/scene1/intro5.png", "assets/scene1/intro6.png"];
 const msgPool = ["assets/scene2/msg.png", "assets/scene2/msg1.png", "assets/scene2/msg2.png", "assets/scene2/msg3.png", "assets/scene2/msg4.png", "assets/scene2/msg5.png", "assets/scene2/msg6.png", "assets/scene2/msg7.png", "assets/scene2/msg8.png"];
@@ -216,7 +224,6 @@ document.body.addEventListener("click", (e) => {
     tapCount++;
     scene3Taps++;
 
-    // Hide hint bubble after 2 taps in the final scene
     if (scene3Taps >= 2) {
       hintBubble.style.opacity = "0";
       setTimeout(() => { hintBubble.style.visibility = "hidden"; }, 500);
