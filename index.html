@@ -76,8 +76,8 @@ body {
 .letter-p {
   font-size: 15px;
   text-align: left;
-  text-indent: 30px; 
-  margin-bottom: 12px;
+  text-indent: 35px; /* Indentation for the paragraphs */
+  margin-bottom: 15px;
 }
 
 #flashOverlay {
@@ -135,10 +135,10 @@ body {
 
 .progress-container {
   position: absolute;
-  bottom: 15%;
+  bottom: 18%; /* Raised higher for phone testing */
   left: 50%;
   transform: translateX(-50%);
-  width: 60%; height: 16px;
+  width: 60%; height: 18px;
   background: rgba(255, 255, 255, 0.4);
   border-radius: 20px;
   border: 2px solid #5d4037;
@@ -164,11 +164,11 @@ body {
   <div id="secretModal">
     <div class="modal-content">
       <div class="close-btn" onclick="closeModal()">X</div>
-      <div style="color: #5d4037; line-height: 1.5;">
-        <h4 style="margin-bottom: 4px; color: #ffb7b2; font-size: 13px; text-align: center;">
+      <div style="color: #5d4037; line-height: 1.6;">
+        <h4 style="margin-bottom: 5px; color: #ffb7b2; font-size: 13px; text-align: center;">
           awesome!! you found the easter egg by tapping 21 times!!
         </h4>
-        <h2 style="margin-bottom: 15px; color: #5d4037; text-align: center; font-size: 20px;">To my dear friend...</h2>
+        <h2 style="margin-bottom: 20px; color: #5d4037; text-align: center; font-size: 22px;">To my dear friend...</h2>
         
         <p class="letter-p">
           Haiii Al Nura!!! I’m really glad I got to celebrate your birthday with you through this little project, even if just for a while :) . I’m just really happy I could make something like this for someone as kind and supportive as youuu.
@@ -178,7 +178,7 @@ body {
           I’m always wishing you the best in everythinggg ✨ and please know that I’m supporting you from afar and rooting for your happiness every single day😊. You deserve all the good things that come your way. Stay precious and amazing! 💖
         </p>
         
-        <p style="margin-top: 15px; text-align: right; font-weight: bold; font-size: 16px;">— Mark</p>
+        <p style="margin-top: 15px; text-align: right; font-weight: bold; font-size: 18px;">— Mark</p>
       </div>
     </div>
   </div>
@@ -210,15 +210,19 @@ let scene3Taps = 0;
 const introImages = ["assets/scene1/intro0.png", "assets/scene1/intro1.png", "assets/scene1/intro2.png", "assets/scene1/intro3.png", "assets/scene1/intro4.png", "assets/scene1/intro5.png", "assets/scene1/intro6.png"];
 const msgPool = ["assets/scene2/msg.png", "assets/scene2/msg1.png", "assets/scene2/msg2.png", "assets/scene2/msg3.png", "assets/scene2/msg4.png", "assets/scene2/msg5.png", "assets/scene2/msg6.png", "assets/scene2/msg7.png", "assets/scene2/msg8.png"];
 
-// SIMPLE TAP HAPTIC
-function vibrate(ms = 15) {
-  if (navigator.vibrate) navigator.vibrate(ms);
+// IMPROVED HAPTIC FUNCTION
+function vibrate(ms = 25) {
+  if (navigator.vibrate) {
+    try {
+      navigator.vibrate(ms);
+    } catch (e) { console.log("Haptics blocked"); }
+  }
 }
 
 document.body.addEventListener("click", (e) => {
   if (secretModal.style.display === "flex") return;
   
-  vibrate(); // Vibrate on every click
+  vibrate(20); // Firm vibration for every tap
 
   if (scene === 1) {
     step++;
@@ -236,7 +240,7 @@ document.body.addEventListener("click", (e) => {
     }
 
     if (tapCount === 21) {
-      vibrate([30, 50, 30]); // Special "Found It" vibration
+      vibrate([40, 100, 40]); // Double pulse for the secret
       openModal();
     } else {
       bg.src = msgPool[Math.floor(Math.random() * msgPool.length)];
@@ -249,7 +253,7 @@ function openModal() {
 }
 
 function closeModal() {
-  vibrate(10);
+  vibrate(15);
   secretModal.style.display = "none";
   tapCount = 0; 
 }
@@ -271,14 +275,19 @@ function holdStart(e) {
   holding = true;
   hint.innerText = "hugging you...";
   
+  // Heartbeat pattern: th-thump... th-thump...
+  if (navigator.vibrate) {
+    navigator.vibrate([40, 60, 40, 400, 40, 60, 40, 400, 40, 60, 40, 400, 40, 60, 40, 400]);
+  }
+
   interval = setInterval(() => {
     if (!holding) return;
     progress += 2;
     progressBar.style.width = progress + "%";
     spawnHeart();
     
-    // Heartbeat haptic pulse every 500ms
-    if (progress % 10 === 0) vibrate(20); 
+    // Safety pulse every 20%
+    if (progress % 20 === 0) vibrate(25);
 
     if (progress >= 100) finishHug();
   }, 50);
@@ -288,11 +297,13 @@ function holdEnd() {
   if (scene !== 2) return;
   holding = false;
   clearInterval(interval);
+  if (navigator.vibrate) navigator.vibrate(0); // Kill vibration immediately
+  
   if (progress < 100) {
     progress = 0;
     progressBar.style.width = "0%";
     hint.innerText = "don't let go yet! :(";
-    vibrate(40); // Sad "buzz" for letting go
+    vibrate(60); // Feedback for failing the hug
   }
 }
 
@@ -304,7 +315,7 @@ function finishHug() {
   window.removeEventListener("pointerleave", holdEnd);
   window.removeEventListener("pointercancel", holdEnd);
   hint.innerText = "hehe thank you :)";
-  vibrate([20, 100, 20]); // "Success" vibration
+  vibrate([30, 150, 30]); 
 
   setTimeout(() => {
     flashOverlay.style.opacity = "1";
