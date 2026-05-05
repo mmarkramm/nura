@@ -24,12 +24,10 @@ body {
   width: 100%;
   max-width: 800px;
   aspect-ratio: 1024 / 540;
-  overflow: hidden; 
 }
 
-/* MODAL FIX: Ensuring it fits small screens */
 #secretModal {
-  position: absolute;
+  position: fixed;
   top: 0; left: 0;
   width: 100%; height: 100%;
   background: rgba(0, 0, 0, 0.85);
@@ -37,29 +35,29 @@ body {
   align-items: center;
   justify-content: center;
   z-index: 100;
-  padding: 15px;
+  padding: 20px;
+  touch-action: auto;
 }
 
 .modal-content {
   position: relative;
   width: 100%;
   max-width: 450px;
-  max-height: 85vh; /* Prevents it from touching top/bottom of screen */
+  max-height: 80vh; 
   background: #fff9f0;
   border-radius: 12px;
-  padding: 20px;
+  padding: 25px;
   border: 3px solid #ffb7b2;
-  box-shadow: 0 0 20px rgba(0,0,0,0.3);
-  overflow-y: auto; /* This allows scrolling if the text is too long */
-  -webkit-overflow-scrolling: touch; /* Smooth scroll for iPhones */
+  overflow-y: auto; 
+  -webkit-overflow-scrolling: touch;
 }
 
 .close-btn {
   position: sticky;
   top: 0;
   float: right;
-  width: 32px;
-  height: 32px;
+  width: 35px;
+  height: 35px;
   background: #ffb7b2;
   color: white;
   border: 2px solid #5d4037;
@@ -67,7 +65,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
   cursor: pointer;
   z-index: 110;
@@ -96,7 +94,7 @@ body {
 
 .heart {
   position: absolute;
-  bottom: 15%;
+  bottom: 25%;
   font-size: 20px;
   z-index: 12;
   pointer-events: none;
@@ -123,14 +121,15 @@ body {
   background: rgba(0, 0, 0, 0.6); 
   padding: 4px 12px; border-radius: 4px; 
   z-index: 10;
-  transition: opacity 0.8s ease, visibility 0.8s;
+  transition: opacity 0.5s ease;
 }
 
 .hint-text { font-size: 16px; color: #fff; font-weight: bold; white-space: nowrap; }
 
 .progress-container {
   position: absolute;
-  bottom: 10%; left: 50%;
+  bottom: 15%;
+  left: 50%;
   transform: translateX(-50%);
   width: 60%; height: 16px;
   background: rgba(255, 255, 255, 0.4);
@@ -158,8 +157,6 @@ body {
   <div id="secretModal">
     <div class="modal-content">
       <div class="close-btn" onclick="closeModal()">X</div>
-      
-      <!-- MESSAGE AREA -->
       <div style="color: #5d4037; line-height: 1.5;">
         <h4 style="margin-bottom: 4px; color: #ffb7b2; font-size: 13px; text-align: center;">
           awesome!! you found the easter egg by tapping 21 times!!
@@ -201,6 +198,7 @@ let progress = 0;
 let interval = null;
 let holding = false;
 let tapCount = 0;
+let scene3Taps = 0; // Track taps specifically in scene 3
 
 const introImages = ["assets/scene1/intro0.png", "assets/scene1/intro1.png", "assets/scene1/intro2.png", "assets/scene1/intro3.png", "assets/scene1/intro4.png", "assets/scene1/intro5.png", "assets/scene1/intro6.png"];
 const msgPool = ["assets/scene2/msg.png", "assets/scene2/msg1.png", "assets/scene2/msg2.png", "assets/scene2/msg3.png", "assets/scene2/msg4.png", "assets/scene2/msg5.png", "assets/scene2/msg6.png", "assets/scene2/msg7.png", "assets/scene2/msg8.png"];
@@ -216,13 +214,19 @@ document.body.addEventListener("click", (e) => {
     }
   } else if (scene === 3) {
     tapCount++;
+    scene3Taps++;
+
+    // Hide hint bubble after 2 taps in the final scene
+    if (scene3Taps >= 2) {
+      hintBubble.style.opacity = "0";
+      setTimeout(() => { hintBubble.style.visibility = "hidden"; }, 500);
+    }
+
     if (tapCount === 21) {
       openModal();
     } else {
       bg.src = msgPool[Math.floor(Math.random() * msgPool.length)];
     }
-    hintBubble.style.opacity = "0";
-    hintBubble.style.visibility = "hidden";
   }
 });
 
@@ -318,7 +322,7 @@ function spawnConfetti() {
   const swingDuration = (Math.random() * 0.5 + 0.5) + 's';
   confetti.style.animationDuration = `${fallDuration}, ${swingDuration}`;
   confetti.style.opacity = Math.random() * 0.5 + 0.5;
-  container.appendChild(confetti);
+  document.body.appendChild(confetti); 
   setTimeout(() => confetti.remove(), 5000);
 }
 </script>
