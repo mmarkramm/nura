@@ -73,11 +73,10 @@ body {
   margin-right: -10px;
 }
 
-/* INDENTATION STYLE */
 .letter-p {
   font-size: 15px;
   text-align: left;
-  text-indent: 30px; /* This adds the space at the start of the first sentence */
+  text-indent: 30px; 
   margin-bottom: 12px;
 }
 
@@ -211,8 +210,15 @@ let scene3Taps = 0;
 const introImages = ["assets/scene1/intro0.png", "assets/scene1/intro1.png", "assets/scene1/intro2.png", "assets/scene1/intro3.png", "assets/scene1/intro4.png", "assets/scene1/intro5.png", "assets/scene1/intro6.png"];
 const msgPool = ["assets/scene2/msg.png", "assets/scene2/msg1.png", "assets/scene2/msg2.png", "assets/scene2/msg3.png", "assets/scene2/msg4.png", "assets/scene2/msg5.png", "assets/scene2/msg6.png", "assets/scene2/msg7.png", "assets/scene2/msg8.png"];
 
+// SIMPLE TAP HAPTIC
+function vibrate(ms = 15) {
+  if (navigator.vibrate) navigator.vibrate(ms);
+}
+
 document.body.addEventListener("click", (e) => {
   if (secretModal.style.display === "flex") return;
+  
+  vibrate(); // Vibrate on every click
 
   if (scene === 1) {
     step++;
@@ -230,6 +236,7 @@ document.body.addEventListener("click", (e) => {
     }
 
     if (tapCount === 21) {
+      vibrate([30, 50, 30]); // Special "Found It" vibration
       openModal();
     } else {
       bg.src = msgPool[Math.floor(Math.random() * msgPool.length)];
@@ -242,6 +249,7 @@ function openModal() {
 }
 
 function closeModal() {
+  vibrate(10);
   secretModal.style.display = "none";
   tapCount = 0; 
 }
@@ -262,11 +270,16 @@ function holdStart(e) {
   if (holding) return;
   holding = true;
   hint.innerText = "hugging you...";
+  
   interval = setInterval(() => {
     if (!holding) return;
     progress += 2;
     progressBar.style.width = progress + "%";
     spawnHeart();
+    
+    // Heartbeat haptic pulse every 500ms
+    if (progress % 10 === 0) vibrate(20); 
+
     if (progress >= 100) finishHug();
   }, 50);
 }
@@ -279,6 +292,7 @@ function holdEnd() {
     progress = 0;
     progressBar.style.width = "0%";
     hint.innerText = "don't let go yet! :(";
+    vibrate(40); // Sad "buzz" for letting go
   }
 }
 
@@ -290,6 +304,7 @@ function finishHug() {
   window.removeEventListener("pointerleave", holdEnd);
   window.removeEventListener("pointercancel", holdEnd);
   hint.innerText = "hehe thank you :)";
+  vibrate([20, 100, 20]); // "Success" vibration
 
   setTimeout(() => {
     flashOverlay.style.opacity = "1";
