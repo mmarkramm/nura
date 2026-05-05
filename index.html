@@ -273,18 +273,22 @@ function holdStart(e) {
   holding = true;
   hint.innerText = "hugging you...";
   
+  // Heartbeat pattern updated to last longer for the 5-second duration
   if (navigator.vibrate) {
-    navigator.vibrate([40, 60, 40, 400, 40, 60, 40, 400, 40, 60, 40, 400, 40, 60, 40, 400]);
+    navigator.vibrate([40, 60, 40, 400, 40, 60, 40, 400, 40, 60, 40, 400, 40, 60, 40, 400, 40, 60, 40, 400, 40, 60, 40, 400, 40, 60, 40, 400]);
   }
 
   interval = setInterval(() => {
     if (!holding) return;
-    progress += 2;
+    progress += 1; // CHANGED FROM 2 TO 1 TO MAKE IT 5 SECONDS TOTAL
     progressBar.style.width = progress + "%";
     spawnHeart();
-    if (progress % 20 === 0) vibrate(25);
+    
+    // Heartbeat haptics triggered every 10% for a consistent feel
+    if (progress % 10 === 0) vibrate(25);
+
     if (progress >= 100) finishHug();
-  }, 50);
+  }, 50); // 50ms * 100 steps = 5000ms (5 seconds)
 }
 
 function holdEnd() {
