@@ -222,6 +222,7 @@ let scene3Taps = 0;
 let cancelCount = 0;
 let isLocked = false; // New flag to prevent tapping during special messages
 
+
 const introImages = ["assets/scene1/intro0.png", "assets/scene1/intro1.png", "assets/scene1/intro2.png", "assets/scene1/intro3.png", "assets/scene1/intro4.png", "assets/scene1/intro5.png", "assets/scene1/intro6.png"];
 const msgPool = ["assets/scene2/msg.png", "assets/scene2/msg1.png", "assets/scene2/msg2.png", "assets/scene2/msg3.png", "assets/scene2/msg4.png", "assets/scene2/msg5.png", "assets/scene2/msg6.png", "assets/scene2/msg7.png", "assets/scene2/msg8.png"];
 
@@ -279,10 +280,14 @@ function setupHug() {
   cancelCount = 0; 
   hint.innerText = "hold to hug";
   progressContainer.style.display = "block";
-  window.addEventListener("pointerdown", holdStart);
-  window.addEventListener("pointerup", holdEnd);
-  window.addEventListener("pointerleave", holdEnd);
-  window.addEventListener("pointercancel", holdEnd);
+
+  // ADDED: A tiny timeout to prevent "Ghost Taps" from Scene 1
+  setTimeout(() => {
+    window.addEventListener("pointerdown", holdStart);
+    window.addEventListener("pointerup", holdEnd);
+    window.addEventListener("pointerleave", holdEnd);
+    window.addEventListener("pointercancel", holdEnd);
+  }, 100); 
 }
 
 function holdStart(e) {
@@ -309,7 +314,7 @@ function holdStart(e) {
 }
 
 function holdEnd() {
-  if (scene !== 2 || isLocked) return; // Prevent logic if locked
+  if (scene !== 2 || isLocked) return; 
   holding = false;
   clearInterval(interval);
   if (navigator.vibrate) navigator.vibrate(0);
@@ -321,20 +326,52 @@ function holdEnd() {
     cancelCount++;
 
     if (cancelCount === 5) {
-      isLocked = true; // LOCK INPUT
+      isLocked = true; 
+      cancelCount = 0; 
+      
+      // 1. VISUAL HINT (Not confusing)
+      // Change the CONTAINER border to gold instead of the bar itself
+      progressContainer.style.borderColor = "#ffd700";
+      progressContainer.style.boxShadow = "0 0 10px #ffd700";
       hint.innerText = "awww nura! that was a lot of hugs thank you! hahaha!!";
+      
       vibrate([50, 100, 50, 100, 50]); 
-      cancelCount = 0;
 
+      // 2. THE EMOJI EXPLOSION (Different Behavior)
+      // We spawn 15 mixed emojis all at once in random directions
+      const specialEmojis = ['❤️', '🥳', '✨', '🎉', '💖'];
+      for(let i = 0; i < 15; i++) {
+        setTimeout(() => {
+            const emoji = specialEmojis[Math.floor(Math.random() * specialEmojis.length)];
+            spawnSpecialEmoji(emoji);
+        }, i * 50); // Rapid fire delivery
+      }
+
+      // 3. THE RESET
       setTimeout(() => {
-        isLocked = false; // UNLOCK INPUT
+        isLocked = false; 
+        progressContainer.style.borderColor = "#5d4037"; // Reset to brown
+        progressContainer.style.boxShadow = "none";
+        
         if (!holding) hint.innerText = "hold to hug";
       }, 3000);
+
     } else {
       hint.innerText = "don't let go yet! :(";
       vibrate(60);
     }
   }
+}
+
+// Separate function for the explosion behavior
+function spawnSpecialEmoji(symbol) {
+  const el = document.createElement('div');
+  el.className = 'heart'; // Reusing your existing heart class for the float animation
+  el.innerText = symbol;
+  el.style.left = (Math.random() * 80 + 10) + '%';
+  el.style.bottom = "20%";
+  container.appendChild(el);
+  setTimeout(() => el.remove(), 1500);
 }
 
 function finishHug() {
