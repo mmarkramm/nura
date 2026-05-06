@@ -206,6 +206,7 @@ let interval = null;
 let holding = false;
 let tapCount = 0;
 let scene3Taps = 0;
+let cancelCount = 0; // New counter for the hug secret
 
 const introImages = ["assets/scene1/intro0.png", "assets/scene1/intro1.png", "assets/scene1/intro2.png", "assets/scene1/intro3.png", "assets/scene1/intro4.png", "assets/scene1/intro5.png", "assets/scene1/intro6.png"];
 const msgPool = ["assets/scene2/msg.png", "assets/scene2/msg1.png", "assets/scene2/msg2.png", "assets/scene2/msg3.png", "assets/scene2/msg4.png", "assets/scene2/msg5.png", "assets/scene2/msg6.png", "assets/scene2/msg7.png", "assets/scene2/msg8.png"];
@@ -264,6 +265,7 @@ function closeModal() {
 
 function setupHug() {
   scene = 2;
+  cancelCount = 0; // Ensure we start at 0 when the progress bar appears
   hint.innerText = "hold to hug";
   progressContainer.style.display = "block";
   window.addEventListener("pointerdown", holdStart);
@@ -302,11 +304,25 @@ function holdEnd() {
   holding = false;
   clearInterval(interval);
   if (navigator.vibrate) navigator.vibrate(0);
+  
   if (progress < 100) {
     progress = 0;
     progressBar.style.width = "0%";
-    hint.innerText = "don't let go yet! :(";
-    vibrate(60);
+    
+    cancelCount++; // This now accurately reflects only Scene 2 attempts
+
+    if (cancelCount === 5) {
+      hint.innerText = "awww nura! that was a lot of hugs thank you! hahaha!!";
+      vibrate([50, 100, 50, 100, 50]); 
+      cancelCount = 0; // Reset for the next 5 tries
+
+      setTimeout(() => {
+        if (!holding) hint.innerText = "hold to hug";
+      }, 3000);
+    } else {
+      hint.innerText = "don't let go yet! :(";
+      vibrate(60);
+    }
   }
 }
 
