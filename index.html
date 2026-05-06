@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>For Nura 🎂</title>
 
+<!-- Adding a rounded, cute font specifically for the UI -->
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap" rel="stylesheet">
+
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -87,8 +90,8 @@ body {
   background: #ffecd2; 
   opacity: 0;
   pointer-events: none;
-  z-index: 200; /* High z-index to cover everything */
-  transition: opacity 0.25s ease-in-out; /* Faster flash */
+  z-index: 200; 
+  transition: opacity 0.25s ease-in-out; 
 }
 
 .confetti {
@@ -122,16 +125,25 @@ body {
 
 .bottom-hint {
   position: absolute;
-  bottom: 2%; left: 50%;
+  bottom: 3.5%; left: 50%; /* Adjusted bottom spacing to match your photo */
   transform: translateX(-50%);
   pointer-events: none;
-  background: rgba(0, 0, 0, 0.6); 
-  padding: 4px 12px; border-radius: 4px; 
+  background: rgba(0, 0, 0, 0.75); 
+  padding: 6px 14px; 
+  border-radius: 6px; 
   z-index: 10;
   transition: opacity 0.5s ease;
 }
 
-.hint-text { font-size: 16px; color: #fff; font-weight: bold; white-space: nowrap; }
+/* THE CUTE BUT CLEAN FONT */
+.hint-text { 
+  font-family: 'Quicksand', sans-serif; 
+  font-size: 17px; 
+  color: #fff; 
+  font-weight: 700; 
+  white-space: nowrap; 
+  letter-spacing: 0.5px;
+}
 
 .progress-container {
   position: absolute;
@@ -190,6 +202,7 @@ body {
 </div>
 
 <script>
+// ALL YOUR RECENT LOGIC PRESERVED
 const container = document.getElementById("mainContainer");
 const bg = document.getElementById("bg");
 const hint = document.getElementById("hint");
@@ -206,7 +219,8 @@ let interval = null;
 let holding = false;
 let tapCount = 0;
 let scene3Taps = 0;
-let cancelCount = 0; // New counter for the hug secret
+let cancelCount = 0;
+let isLocked = false; // New flag to prevent tapping during special messages
 
 const introImages = ["assets/scene1/intro0.png", "assets/scene1/intro1.png", "assets/scene1/intro2.png", "assets/scene1/intro3.png", "assets/scene1/intro4.png", "assets/scene1/intro5.png", "assets/scene1/intro6.png"];
 const msgPool = ["assets/scene2/msg.png", "assets/scene2/msg1.png", "assets/scene2/msg2.png", "assets/scene2/msg3.png", "assets/scene2/msg4.png", "assets/scene2/msg5.png", "assets/scene2/msg6.png", "assets/scene2/msg7.png", "assets/scene2/msg8.png"];
@@ -241,12 +255,9 @@ document.body.addEventListener("click", (e) => {
       vibrate([40, 100, 40]); 
       openModal();
     } else {
-      // NEW LOGIC: Show 0-8 in order first, then randomize
       if (tapCount <= msgPool.length) {
-        // This shows msg.png, then msg1.png, then msg2.png, etc.
         bg.src = msgPool[tapCount - 1];
       } else {
-        // Once all have been seen once, start randomizing
         bg.src = msgPool[Math.floor(Math.random() * msgPool.length)];
       }
     }
@@ -265,7 +276,7 @@ function closeModal() {
 
 function setupHug() {
   scene = 2;
-  cancelCount = 0; // Ensure we start at 0 when the progress bar appears
+  cancelCount = 0; 
   hint.innerText = "hold to hug";
   progressContainer.style.display = "block";
   window.addEventListener("pointerdown", holdStart);
@@ -275,32 +286,30 @@ function setupHug() {
 }
 
 function holdStart(e) {
-  if (scene !== 2) return;
+  if (scene !== 2 || isLocked) return;
   e.preventDefault();
   if (holding) return;
   holding = true;
   hint.innerText = "hugging you...";
   
-  // Heartbeat pattern updated to last longer for the 5-second duration
   if (navigator.vibrate) {
     navigator.vibrate([40, 60, 40, 400, 40, 60, 40, 400, 40, 60, 40, 400, 40, 60, 40, 400, 40, 60, 40, 400, 40, 60, 40, 400, 40, 60, 40, 400]);
   }
 
   interval = setInterval(() => {
     if (!holding) return;
-    progress += 1; // CHANGED FROM 2 TO 1 TO MAKE IT 5 SECONDS TOTAL
+    progress += 1; 
     progressBar.style.width = progress + "%";
     spawnHeart();
     
-    // Heartbeat haptics triggered every 10% for a consistent feel
     if (progress % 10 === 0) vibrate(25);
 
     if (progress >= 100) finishHug();
-  }, 50); // 50ms * 100 steps = 5000ms (5 seconds)
+  }, 50); 
 }
 
 function holdEnd() {
-  if (scene !== 2) return;
+  if (scene !== 2 || isLocked) return; // Prevent logic if locked
   holding = false;
   clearInterval(interval);
   if (navigator.vibrate) navigator.vibrate(0);
@@ -309,14 +318,16 @@ function holdEnd() {
     progress = 0;
     progressBar.style.width = "0%";
     
-    cancelCount++; // This now accurately reflects only Scene 2 attempts
+    cancelCount++;
 
     if (cancelCount === 5) {
+      isLocked = true; // LOCK INPUT
       hint.innerText = "awww nura! that was a lot of hugs thank you! hahaha!!";
       vibrate([50, 100, 50, 100, 50]); 
-      cancelCount = 0; // Reset for the next 5 tries
+      cancelCount = 0;
 
       setTimeout(() => {
+        isLocked = false; // UNLOCK INPUT
         if (!holding) hint.innerText = "hold to hug";
       }, 3000);
     } else {
@@ -335,11 +346,9 @@ function finishHug() {
   vibrate([30, 150, 30]); 
   hint.innerText = "hehe that felt nice. thank you :)";
 
-  // SNAPPY TRANSITION LOGIC
   setTimeout(() => {
     flashOverlay.style.opacity = "1";
     
-    // Swap image IMMEDIATELY while screen is white
     setTimeout(() => {
       scene = 3;
       progressContainer.style.display = "none";
@@ -347,7 +356,6 @@ function finishHug() {
       hint.innerText = "tap for more :)";
       startConfetti();
       
-      // Wait a tiny bit then fade out white overlay
       setTimeout(() => {
         flashOverlay.style.opacity = "0";
       }, 100); 
