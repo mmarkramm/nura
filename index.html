@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>For Nura 🎂</title>
 
-<!-- Adding a rounded, cute font specifically for the UI -->
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap" rel="stylesheet">
 
 <style>
@@ -27,6 +26,17 @@ body {
   width: 100%;
   max-width: 800px;
   aspect-ratio: 1024 / 540;
+}
+
+/* --- ADDED HEARTBEAT ANIMATION --- */
+@keyframes pulse-bg {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+
+.pulsing {
+  animation: pulse-bg 1.5s ease-in-out infinite;
 }
 
 #secretModal {
@@ -91,7 +101,7 @@ body {
   opacity: 0;
   pointer-events: none;
   z-index: 200; 
-  transition: opacity 0.25s ease-in-out; 
+  transition: opacity 0.15s ease-in-out; 
 }
 
 .confetti {
@@ -121,11 +131,12 @@ body {
 .scene-img { 
   width: 100%; height: 100%; display: block; object-fit: contain;
   user-select: none; -webkit-user-drag: none; pointer-events: none;
+  transition: transform 0.3s ease;
 }
 
 .bottom-hint {
   position: absolute;
-  bottom: 3.5%; left: 50%; /* Adjusted bottom spacing to match your photo */
+  bottom: 3.5%; left: 50%;
   transform: translateX(-50%);
   pointer-events: none;
   background: rgba(0, 0, 0, 0.75); 
@@ -135,7 +146,6 @@ body {
   transition: opacity 0.5s ease;
 }
 
-/* THE CUTE BUT CLEAN FONT */
 .hint-text { 
   font-family: 'Quicksand', sans-serif; 
   font-size: 17px; 
@@ -164,6 +174,24 @@ body {
   background-size: 30px 30px;
   animation: moveStripes 1s linear infinite;
   transition: width 0.1s linear;
+}
+
+.click-ripple {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  background: rgba(255, 183, 178, 0.5);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 999;
+  transform: translate(-50%, -50%);
+  /* Slower ripple for better recording visibility */
+  animation: ripple-out 1.2s ease-out forwards;
+}
+
+@keyframes ripple-out {
+  0% { width: 0; height: 0; opacity: 0.7; }
+  100% { width: 120px; height: 120px; opacity: 0; }
 }
 
 @keyframes moveStripes { from { background-position: 0 0; } to { background-position: 30px 0; } }
@@ -196,13 +224,12 @@ body {
   </div>
 
   <div id="flashOverlay"></div>
-  <img id="bg" class="scene-img" src="assets/scene1/intro0.png">
+  <img id="bg" class="scene-img" src="assets/scene1/intro1.png">
   <div class="progress-container" id="progressContainer"><div class="progress-bar" id="progressBar"></div></div>
   <div id="hintBubble" class="bottom-hint"><div id="hint" class="hint-text">tap me :)</div></div>
 </div>
 
 <script>
-// ALL YOUR RECENT LOGIC PRESERVED
 const container = document.getElementById("mainContainer");
 const bg = document.getElementById("bg");
 const hint = document.getElementById("hint");
@@ -212,6 +239,22 @@ const progressBar = document.getElementById("progressBar");
 const flashOverlay = document.getElementById("flashOverlay");
 const secretModal = document.getElementById("secretModal");
 
+// Assets & Preloading
+const preloadImg = new Image();
+preloadImg.src = "assets/scene2/msg.png"; 
+
+const introImages = [
+  "assets/scene1/intro1.png", 
+  "assets/scene1/intro2.png", 
+  "assets/scene1/intro3.png", 
+  "assets/scene1/intro4.png", 
+  "assets/scene1/intro5.png", 
+  "assets/scene1/intro6.png", 
+  "assets/scene1/intro7.png"
+];
+const msgPool = ["assets/scene2/msg.png", "assets/scene2/msg1.png", "assets/scene2/msg2.png", "assets/scene2/msg3.png", "assets/scene2/msg4.png", "assets/scene2/msg5.png", "assets/scene2/msg6.png", "assets/scene2/msg7.png", "assets/scene2/msg8.png"];
+
+// State Management
 let scene = 1;
 let step = 0;
 let progress = 0;
@@ -220,11 +263,8 @@ let holding = false;
 let tapCount = 0;
 let scene3Taps = 0;
 let cancelCount = 0;
-let isLocked = false; // New flag to prevent tapping during special messages
-
-
-const introImages = ["assets/scene1/intro0.png", "assets/scene1/intro1.png", "assets/scene1/intro2.png", "assets/scene1/intro3.png", "assets/scene1/intro4.png", "assets/scene1/intro5.png", "assets/scene1/intro6.png"];
-const msgPool = ["assets/scene2/msg.png", "assets/scene2/msg1.png", "assets/scene2/msg2.png", "assets/scene2/msg3.png", "assets/scene2/msg4.png", "assets/scene2/msg5.png", "assets/scene2/msg6.png", "assets/scene2/msg7.png", "assets/scene2/msg8.png"];
+let isLocked = false;
+let introTimer = null; 
 
 function vibrate(ms = 25) {
   if (navigator.vibrate) {
@@ -232,15 +272,27 @@ function vibrate(ms = 25) {
   }
 }
 
+// Scene 1 & 3 Tapping
 document.body.addEventListener("click", (e) => {
-  if (secretModal.style.display === "flex") return;
+  if (secretModal.style.display === "flex" || isLocked) return;
   
   vibrate(20); 
 
   if (scene === 1) {
+    clearTimeout(introTimer); 
     step++;
     if (step < introImages.length) {
       bg.src = introImages[step];
+      
+      if (step === 4) {
+        introTimer = setTimeout(() => {
+          if (scene === 1 && step === 4) {
+            hint.innerText = "Secret Unlocked: 5th image and you stayed for 5 seconds. 🎉 Happy Birthday, Nura! ✨";
+            vibrate([30, 100, 30, 100, 30]); 
+          }
+        }, 5000); 
+      }
+
       if (step === 6) setupHug();
     }
   } else if (scene === 3) {
@@ -275,13 +327,13 @@ function closeModal() {
   tapCount = 0; 
 }
 
+// Scene 2 Hugging Logic
 function setupHug() {
   scene = 2;
   cancelCount = 0; 
   hint.innerText = "hold to hug";
   progressContainer.style.display = "block";
 
-  // ADDED: A tiny timeout to prevent "Ghost Taps" from Scene 1
   setTimeout(() => {
     window.addEventListener("pointerdown", holdStart);
     window.addEventListener("pointerup", holdEnd);
@@ -295,10 +347,14 @@ function holdStart(e) {
   e.preventDefault();
   if (holding) return;
   holding = true;
+  
+  // RESTORED: Heartbeat Pulse Animation
+  bg.classList.add("pulsing"); 
+  
   hint.innerText = "hugging you...";
   
   if (navigator.vibrate) {
-    navigator.vibrate([40, 60, 40, 400, 40, 60, 40, 400, 40, 60, 40, 400, 40, 60, 40, 400, 40, 60, 40, 400, 40, 60, 40, 400, 40, 60, 40, 400]);
+    navigator.vibrate([40, 60, 40, 400, 40, 60, 40, 400, 40, 60, 40, 400, 40, 60, 40, 400]);
   }
 
   interval = setInterval(() => {
@@ -314,6 +370,9 @@ function holdStart(e) {
 }
 
 function holdEnd() {
+  // RESTORED: Stop Pulse Animation Immediately
+  bg.classList.remove("pulsing");
+  
   if (scene !== 2 || isLocked) return; 
   holding = false;
   clearInterval(interval);
@@ -329,30 +388,24 @@ function holdEnd() {
       isLocked = true; 
       cancelCount = 0; 
       
-      // 1. VISUAL HINT (Not confusing)
-      // Change the CONTAINER border to gold instead of the bar itself
       progressContainer.style.borderColor = "#ffd700";
       progressContainer.style.boxShadow = "0 0 10px #ffd700";
       hint.innerText = "awww nura! that was a lot of hugs thank you! hahaha!!";
       
       vibrate([50, 100, 50, 100, 50]); 
 
-      // 2. THE EMOJI EXPLOSION (Different Behavior)
-      // We spawn 15 mixed emojis all at once in random directions
       const specialEmojis = ['❤️', '🥳', '✨', '🎉', '💖'];
       for(let i = 0; i < 15; i++) {
         setTimeout(() => {
             const emoji = specialEmojis[Math.floor(Math.random() * specialEmojis.length)];
             spawnSpecialEmoji(emoji);
-        }, i * 50); // Rapid fire delivery
+        }, i * 50);
       }
 
-      // 3. THE RESET
       setTimeout(() => {
         isLocked = false; 
-        progressContainer.style.borderColor = "#5d4037"; // Reset to brown
+        progressContainer.style.borderColor = "#5d4037"; 
         progressContainer.style.boxShadow = "none";
-        
         if (!holding) hint.innerText = "hold to hug";
       }, 3000);
 
@@ -363,10 +416,9 @@ function holdEnd() {
   }
 }
 
-// Separate function for the explosion behavior
 function spawnSpecialEmoji(symbol) {
   const el = document.createElement('div');
-  el.className = 'heart'; // Reusing your existing heart class for the float animation
+  el.className = 'heart'; 
   el.innerText = symbol;
   el.style.left = (Math.random() * 80 + 10) + '%';
   el.style.bottom = "20%";
@@ -376,6 +428,7 @@ function spawnSpecialEmoji(symbol) {
 
 function finishHug() {
   holding = false;
+  bg.classList.remove("pulsing"); // CLEANUP
   clearInterval(interval);
   window.removeEventListener("pointerdown", holdStart);
   window.removeEventListener("pointerup", holdEnd);
@@ -387,17 +440,17 @@ function finishHug() {
     flashOverlay.style.opacity = "1";
     
     setTimeout(() => {
-      scene = 3;
+      scene = 3; // DISABLE RIPPLES STARTING NOW
       progressContainer.style.display = "none";
-      bg.src = "assets/scene2/msg.png";
+      bg.src = preloadImg.src; 
       hint.innerText = "tap for more :)";
       startConfetti();
       
       setTimeout(() => {
         flashOverlay.style.opacity = "0";
-      }, 100); 
-    }, 250); 
-  }, 600); 
+      }, 50); 
+    }, 150); 
+  }, 300); 
 }
 
 function spawnHeart() {
@@ -428,6 +481,29 @@ function spawnConfetti() {
   document.body.appendChild(confetti); 
   setTimeout(() => confetti.remove(), 5000);
 }
+
+function createRipple(e) {
+  // Logic: Removed the 'if (scene === 3) return' so it works EVERYWHERE
+  const ripple = document.createElement("div");
+  ripple.className = "click-ripple";
+  
+  // Handles both Mouse and Touch coordinates for your recording
+  const x = e.clientX || (e.touches && e.touches[0].clientX);
+  const y = e.clientY || (e.touches && e.touches[0].clientY);
+  
+  ripple.style.left = x + "px";
+  ripple.style.top = y + "px";
+  
+  document.body.appendChild(ripple);
+  
+  // Matches the gentle 1.2s wave duration
+  setTimeout(() => {
+    ripple.remove();
+  }, 1200);
+}
+
+// Global listener to ensure ripples happen on every touch
+document.body.addEventListener("pointerdown", createRipple);
 </script>
 </body>
 </html>
