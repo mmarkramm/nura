@@ -19,6 +19,8 @@ body {
   overflow: hidden;
   touch-action: none;
   font-family: "Marker Felt", "Bradley Hand ITC", "Comic Sans MS", cursive;
+  /* Added transition for the smooth color shift */
+  transition: background-color 0.5s ease;
 }
 
 .main-container {
@@ -28,7 +30,6 @@ body {
   aspect-ratio: 1024 / 540;
 }
 
-/* --- ADDED HEARTBEAT ANIMATION --- */
 @keyframes pulse-bg {
   0% { transform: scale(1); }
   50% { transform: scale(1.03); }
@@ -144,6 +145,7 @@ body {
   border-radius: 6px; 
   z-index: 10;
   transition: opacity 0.5s ease;
+  /* Removed animation: breathe-text */
 }
 
 .hint-text { 
@@ -185,7 +187,6 @@ body {
   pointer-events: none;
   z-index: 999;
   transform: translate(-50%, -50%);
-  /* Slower ripple for better recording visibility */
   animation: ripple-out 1.2s ease-out forwards;
 }
 
@@ -239,7 +240,6 @@ const progressBar = document.getElementById("progressBar");
 const flashOverlay = document.getElementById("flashOverlay");
 const secretModal = document.getElementById("secretModal");
 
-// Assets & Preloading
 const preloadImg = new Image();
 preloadImg.src = "assets/scene2/msg.png"; 
 
@@ -254,7 +254,6 @@ const introImages = [
 ];
 const msgPool = ["assets/scene2/msg.png", "assets/scene2/msg1.png", "assets/scene2/msg2.png", "assets/scene2/msg3.png", "assets/scene2/msg4.png", "assets/scene2/msg5.png", "assets/scene2/msg6.png", "assets/scene2/msg7.png", "assets/scene2/msg8.png"];
 
-// State Management
 let scene = 1;
 let step = 0;
 let progress = 0;
@@ -272,7 +271,6 @@ function vibrate(ms = 25) {
   }
 }
 
-// Scene 1 & 3 Tapping
 document.body.addEventListener("click", (e) => {
   if (secretModal.style.display === "flex" || isLocked) return;
   
@@ -298,6 +296,10 @@ document.body.addEventListener("click", (e) => {
   } else if (scene === 3) {
     tapCount++;
     scene3Taps++;
+
+    flashOverlay.style.transition = "opacity 0.05s";
+    flashOverlay.style.opacity = "0.08";
+    setTimeout(() => { flashOverlay.style.opacity = "0"; }, 50);
 
     if (scene3Taps >= 2) {
       hintBubble.style.opacity = "0";
@@ -327,7 +329,6 @@ function closeModal() {
   tapCount = 0; 
 }
 
-// Scene 2 Hugging Logic
 function setupHug() {
   scene = 2;
   cancelCount = 0; 
@@ -347,10 +348,13 @@ function holdStart(e) {
   e.preventDefault();
   if (holding) return;
   holding = true;
-  
-  // RESTORED: Heartbeat Pulse Animation
+
+  document.body.style.cursor = `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' style='font-size:30px'><text y='30'>🤗</text></svg>"), auto`;
+
   bg.classList.add("pulsing"); 
+  // ... rest of your code
   
+  bg.classList.add("pulsing"); 
   hint.innerText = "hugging you...";
   
   if (navigator.vibrate) {
@@ -361,6 +365,8 @@ function holdStart(e) {
     if (!holding) return;
     progress += 1; 
     progressBar.style.width = progress + "%";
+    // Smooth dynamic tinting
+    document.body.style.backgroundColor = `rgb(253, ${246 - (progress/2.5)}, ${227 - (progress/5)})`;
     spawnHeart();
     
     if (progress % 10 === 0) vibrate(25);
@@ -370,8 +376,8 @@ function holdStart(e) {
 }
 
 function holdEnd() {
-  // RESTORED: Stop Pulse Animation Immediately
   bg.classList.remove("pulsing");
+  document.body.style.cursor = "default";
   
   if (scene !== 2 || isLocked) return; 
   holding = false;
@@ -381,6 +387,8 @@ function holdEnd() {
   if (progress < 100) {
     progress = 0;
     progressBar.style.width = "0%";
+    // Reset background color if let go early
+    document.body.style.backgroundColor = "#fdf6e3";
     
     cancelCount++;
 
@@ -428,7 +436,8 @@ function spawnSpecialEmoji(symbol) {
 
 function finishHug() {
   holding = false;
-  bg.classList.remove("pulsing"); // CLEANUP
+  bg.classList.remove("pulsing");
+  document.body.style.cursor = "default";
   clearInterval(interval);
   window.removeEventListener("pointerdown", holdStart);
   window.removeEventListener("pointerup", holdEnd);
@@ -440,7 +449,10 @@ function finishHug() {
     flashOverlay.style.opacity = "1";
     
     setTimeout(() => {
-      scene = 3; // DISABLE RIPPLES STARTING NOW
+      scene = 3;
+      // LOCK in the warm pink background permanently
+      // document.body.style.backgroundColor = "#ffecd2";
+
       progressContainer.style.display = "none";
       bg.src = preloadImg.src; 
       hint.innerText = "tap for more :)";
@@ -483,26 +495,16 @@ function spawnConfetti() {
 }
 
 function createRipple(e) {
-  // Logic: Removed the 'if (scene === 3) return' so it works EVERYWHERE
   const ripple = document.createElement("div");
   ripple.className = "click-ripple";
-  
-  // Handles both Mouse and Touch coordinates for your recording
   const x = e.clientX || (e.touches && e.touches[0].clientX);
   const y = e.clientY || (e.touches && e.touches[0].clientY);
-  
   ripple.style.left = x + "px";
   ripple.style.top = y + "px";
-  
   document.body.appendChild(ripple);
-  
-  // Matches the gentle 1.2s wave duration
-  setTimeout(() => {
-    ripple.remove();
-  }, 1200);
+  setTimeout(() => { ripple.remove(); }, 1200);
 }
 
-// Global listener to ensure ripples happen on every touch
 document.body.addEventListener("pointerdown", createRipple);
 </script>
 </body>
