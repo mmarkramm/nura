@@ -107,10 +107,16 @@ body {
 
 .confetti {
   position: absolute;
-  width: 10px; height: 10px;
   top: -20px; z-index: 15;
-  border-radius: 2px;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
   animation: fall linear forwards, swing ease-in-out infinite alternate;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .heart {
@@ -119,6 +125,10 @@ body {
   font-size: 20px;
   z-index: 12;
   pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
   animation: floatUp 1.5s ease-out forwards;
 }
 
@@ -132,6 +142,9 @@ body {
 .scene-img { 
   width: 100%; height: 100%; display: block; object-fit: contain;
   user-select: none; -webkit-user-drag: none; pointer-events: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
   transition: transform 0.3s ease;
 }
 
@@ -240,6 +253,12 @@ const progressBar = document.getElementById("progressBar");
 const flashOverlay = document.getElementById("flashOverlay");
 const secretModal = document.getElementById("secretModal");
 
+// Prevent dragging on the image
+bg.addEventListener("dragstart", (e) => e.preventDefault());
+bg.addEventListener("touchmove", (e) => {
+  if (holding) e.preventDefault();
+});
+
 const preloadImg = new Image();
 preloadImg.src = "assets/scene2/msg.png"; 
 
@@ -301,9 +320,37 @@ document.body.addEventListener("click", (e) => {
     flashOverlay.style.opacity = "0.08";
     setTimeout(() => { flashOverlay.style.opacity = "0"; }, 50);
 
-    if (scene3Taps >= 2) {
+    // Hide hint bubble after 2 taps (unless it's a milestone)
+    if (scene3Taps >= 2 && tapCount !== 5 && tapCount !== 10 && tapCount !== 15 && tapCount !== 20) {
       hintBubble.style.opacity = "0";
       setTimeout(() => { hintBubble.style.visibility = "hidden"; }, 500);
+    }
+
+    // Milestone celebrations
+    if (tapCount === 5) {
+      hintBubble.style.opacity = "1";
+      hintBubble.style.visibility = "visible";
+      hint.innerText = "yayy 🎉";
+      vibrate([30, 50, 30]);
+      spawnMilestoneEmojis(['🎉', '✨'], 8);
+    } else if (tapCount === 10) {
+      hintBubble.style.opacity = "1";
+      hintBubble.style.visibility = "visible";
+      hint.innerText = "i'm wishing you all the best :)";
+      vibrate([40, 60, 40, 60]);
+      spawnMilestoneEmojis(['💖', '🥳', '🎂'], 12);
+    } else if (tapCount === 15) {
+      hintBubble.style.opacity = "1";
+      hintBubble.style.visibility = "visible";
+      hint.innerText = "looking for something? 🤣";
+      vibrate([50, 70, 50, 70, 50]);
+      spawnMilestoneEmojis(['✨', '🎁', '🎈', '💫'], 15);
+    } else if (tapCount === 20) {
+      hintBubble.style.opacity = "1";
+      hintBubble.style.visibility = "visible";
+      hint.innerText = "one more! 😉";
+      vibrate([60, 80, 60, 80, 60, 80]);
+      spawnMilestoneEmojis(['🌟', '🎊', '💝', '🎉', '✨'], 20);
     }
 
     if (tapCount === 21) {
@@ -434,6 +481,23 @@ function spawnSpecialEmoji(symbol) {
   setTimeout(() => el.remove(), 1500);
 }
 
+function spawnMilestoneEmojis(emojis, count) {
+  for(let i = 0; i < count; i++) {
+    setTimeout(() => {
+      const emoji = emojis[Math.floor(Math.random() * emojis.length)];
+      const el = document.createElement('div');
+      el.className = 'heart';
+      el.innerText = emoji;
+      el.style.left = (Math.random() * 80 + 10) + '%';
+      el.style.bottom = "25%";
+      el.style.fontSize = "24px";
+      el.style.animationDuration = "2s";
+      container.appendChild(el);
+      setTimeout(() => el.remove(), 2000);
+    }, i * 30);
+  }
+}
+
 function finishHug() {
   holding = false;
   bg.classList.remove("pulsing");
@@ -481,11 +545,27 @@ function startConfetti() {
 }
 
 function spawnConfetti() {
-  const colors = ['#ffb7b2', '#ffdac1', '#e2f0cb', '#b5ead7', '#c7ceea', '#fff4bd'];
   const confetti = document.createElement('div');
   confetti.className = 'confetti';
   confetti.style.left = Math.random() * 100 + '%';
-  confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+  
+  // Randomly choose between colored squares and emojis
+  if (Math.random() < 0.5) {
+    // Colored square (original)
+    const colors = ['#ffb7b2', '#ffdac1', '#e2f0cb', '#b5ead7', '#c7ceea', '#fff4bd'];
+    confetti.style.width = '10px';
+    confetti.style.height = '10px';
+    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    confetti.style.borderRadius = '2px';
+  } else {
+    // Emoji (new)
+    const emojis = ['💙','💝','💜','💞','🎉', '✨', '💖', '🎂', '🎁', '🎈', '🌟', '🎊', '💟', '🥳', '🎆', '🎇'];
+    confetti.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+    confetti.style.fontSize = '20px';
+    confetti.style.pointerEvents = 'none';
+    confetti.style.userSelect = 'none';
+  }
+  
   const fallDuration = (Math.random() * 2.5 + 2.5) + 's';
   const swingDuration = (Math.random() * 0.5 + 0.5) + 's';
   confetti.style.animationDuration = `${fallDuration}, ${swingDuration}`;
