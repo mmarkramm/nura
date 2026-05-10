@@ -623,7 +623,12 @@
       }
 
       document.body.addEventListener("click", (e) => {
-        if (secretModal.style.display === "flex" || isLocked) return;
+        if (
+          secretModal.style.display === "flex" ||
+          psModal.style.display === "flex" ||
+          isLocked
+        )
+          return;
 
         vibrate(20);
 
@@ -728,6 +733,7 @@
       function closePS() {
         vibrate(15);
         psModal.style.display = "none";
+        secretModal.style.display = "flex";
       }
 
       function setupHug() {
