@@ -1,596 +1,990 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>For Nura 🎂</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>For Nura 🎂</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap"
+      rel="stylesheet"
+    />
 
-<style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-body {
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #fdf6e3;
-  overflow: hidden;
-  touch-action: none;
-  font-family: "Marker Felt", "Bradley Hand ITC", "Comic Sans MS", cursive;
-  /* Added transition for the smooth color shift */
-  transition: background-color 0.5s ease;
-}
+      body {
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fdf6e3;
+        overflow: hidden;
+        touch-action: none;
+        font-family:
+          "Marker Felt", "Bradley Hand ITC", "Comic Sans MS", cursive;
+        /* Added transition for the smooth color shift */
+        transition: background-color 0.5s ease;
+      }
 
-.main-container {
-  position: relative;
-  width: 100%;
-  max-width: 800px;
-  aspect-ratio: 1024 / 540;
-}
+      .main-container {
+        position: relative;
+        width: 100%;
+        max-width: 800px;
+        aspect-ratio: 1024 / 540;
+      }
 
-@keyframes pulse-bg {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.03); }
-  100% { transform: scale(1); }
-}
+      @keyframes pulse-bg {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.03);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
 
-.pulsing {
-  animation: pulse-bg 1.5s ease-in-out infinite;
-}
+      .pulsing {
+        animation: pulse-bg 1.5s ease-in-out infinite;
+      }
 
-#secretModal {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0, 0, 0, 0.85);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 100;
-  padding: 20px;
-  touch-action: auto;
-}
+      #secretModal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.85);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 100;
+        padding: 20px;
+        touch-action: auto;
+      }
 
-.modal-content {
-  position: relative;
-  width: 100%;
-  max-width: 450px;
-  max-height: 80vh; 
-  background: #fff9f0;
-  border-radius: 12px;
-  padding: 25px;
-  border: 3px solid #ffb7b2;
-  overflow-y: auto; 
-  -webkit-overflow-scrolling: touch;
-}
+      .modal-content {
+        position: relative;
+        width: 100%;
+        max-width: 450px;
+        max-height: 80vh;
+        background: #fff9f0;
+        border-radius: 12px;
+        padding: 25px;
+        border: 3px solid #ffb7b2;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        /* HIDE SCROLLBAR LOGIC */
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none;
+      }
 
-.close-btn {
-  position: sticky;
-  top: 0;
-  float: right;
-  width: 35px;
-  height: 35px;
-  background: #ffb7b2;
-  color: white;
-  border: 2px solid #5d4037;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  font-weight: bold;
-  cursor: pointer;
-  z-index: 110;
-  margin-top: -10px;
-  margin-right: -10px;
-}
+      .modal-content::-webkit-scrollbar {
+        display: none;
+      }
 
-.letter-p {
-  font-size: 15px;
-  text-align: left;
-  text-indent: 35px; 
-  margin-bottom: 15px;
-}
+      .close-btn {
+        position: sticky;
+        top: 0;
+        float: right;
+        width: 35px;
+        height: 35px;
+        background: #ffb7b2;
+        color: white;
+        border: 2px solid #5d4037;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        font-weight: bold;
+        cursor: pointer;
+        z-index: 110;
+        margin-top: -10px;
+        margin-right: -10px;
+      }
 
-#flashOverlay {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: #ffecd2; 
-  opacity: 0;
-  pointer-events: none;
-  z-index: 200; 
-  transition: opacity 0.15s ease-in-out; 
-}
+      .letter-p {
+        font-size: 15px;
+        text-align: left;
+        text-indent: 35px;
+        margin-bottom: 15px;
+      }
 
-.confetti {
-  position: absolute;
-  top: -20px; z-index: 15;
-  pointer-events: none;
-  user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  animation: fall linear forwards, swing ease-in-out infinite alternate;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+      #flashOverlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #ffecd2;
+        opacity: 0;
+        pointer-events: none;
+        z-index: 200;
+        transition: opacity 0.15s ease-in-out;
+      }
 
-.heart {
-  position: absolute;
-  bottom: 25%;
-  font-size: 20px;
-  z-index: 12;
-  pointer-events: none;
-  user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  animation: floatUp 1.5s ease-out forwards;
-}
+      .confetti {
+        position: absolute;
+        top: -20px;
+        z-index: 15;
+        pointer-events: none;
+        user-select: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        animation:
+          fall linear forwards,
+          swing ease-in-out infinite alternate;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
 
-@keyframes fall { to { transform: translateY(110vh) rotate(720deg); } }
-@keyframes swing { from { margin-left: -20px; } to { margin-left: 20px; } }
-@keyframes floatUp {
-  0% { transform: translateY(0) scale(1); opacity: 1; }
-  100% { transform: translateY(-150px) scale(1.5); opacity: 0; }
-}
+      .heart {
+        position: absolute;
+        bottom: 25%;
+        font-size: 20px;
+        z-index: 12;
+        pointer-events: none;
+        user-select: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        animation: floatUp 1.5s ease-out forwards;
+      }
 
-.scene-img { 
-  width: 100%; height: 100%; display: block; object-fit: contain;
-  user-select: none; -webkit-user-drag: none; pointer-events: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  transition: transform 0.3s ease;
-}
+      @keyframes fall {
+        to {
+          transform: translateY(110vh) rotate(720deg);
+        }
+      }
+      @keyframes swing {
+        from {
+          margin-left: -20px;
+        }
+        to {
+          margin-left: 20px;
+        }
+      }
+      @keyframes floatUp {
+        0% {
+          transform: translateY(0) scale(1);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-150px) scale(1.5);
+          opacity: 0;
+        }
+      }
 
-.bottom-hint {
-  position: absolute;
-  bottom: 3.5%; left: 50%;
-  transform: translateX(-50%);
-  pointer-events: none;
-  background: rgba(0, 0, 0, 0.75); 
-  padding: 6px 14px; 
-  border-radius: 6px; 
-  z-index: 10;
-  transition: opacity 0.5s ease;
-  /* Removed animation: breathe-text */
-}
+      .scene-img {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: fill; /* This keeps the aspect ratio */
+        user-select: none;
+        -webkit-user-drag: none;
+        pointer-events: none;
+        box-sizing: border-box;
+        border: 4px solid transparent;
+        transition:
+          transform 0.3s ease,
+          border 0.8s ease; /* Added transition for smooth frame appearance */
+      }
 
-.hint-text { 
-  font-family: 'Quicksand', sans-serif; 
-  font-size: 17px; 
-  color: #fff; 
-  font-weight: 700; 
-  white-space: nowrap; 
-  letter-spacing: 0.5px;
-}
+      .framed {
+        border: 4px solid #ffb7b2;
+        border-radius: 4px; /* Optional: adds a slight curve to the frame */
+      }
 
-.progress-container {
-  position: absolute;
-  bottom: 18%; 
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60%; height: 18px;
-  background: rgba(255, 255, 255, 0.4);
-  border-radius: 20px;
-  border: 2px solid #5d4037;
-  display: none; overflow: hidden; z-index: 5;
-}
+      .bottom-hint {
+        position: absolute;
+        bottom: 3.5%;
+        left: 50%;
+        transform: translateX(-50%);
+        pointer-events: none;
+        background: rgba(0, 0, 0, 0.75);
+        padding: 6px 14px;
+        border-radius: 6px;
+        z-index: 10;
+        transition: opacity 0.5s ease;
+        /* Removed animation: breathe-text */
+      }
 
-.progress-bar {
-  height: 100%; width: 0%;
-  background-color: #ffb7b2;
-  background-image: linear-gradient(45deg, rgba(255,255,255,0.3) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.3) 75%, transparent 75%, transparent);
-  background-size: 30px 30px;
-  animation: moveStripes 1s linear infinite;
-  transition: width 0.1s linear;
-}
+      .hint-text {
+        font-family: "Quicksand", sans-serif;
+        font-size: 17px;
+        color: #fff;
+        font-weight: 700;
+        white-space: nowrap;
+        letter-spacing: 0.5px;
+      }
 
-.click-ripple {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  background: rgba(255, 183, 178, 0.5);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 999;
-  transform: translate(-50%, -50%);
-  animation: ripple-out 1.2s ease-out forwards;
-}
+      .progress-container {
+        position: absolute;
+        bottom: 18%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60%;
+        height: 18px;
+        background: rgba(255, 255, 255, 0.4);
+        border-radius: 20px;
+        border: 2px solid #5d4037;
+        display: none;
+        overflow: hidden;
+        z-index: 5;
+      }
 
-@keyframes ripple-out {
-  0% { width: 0; height: 0; opacity: 0.7; }
-  100% { width: 120px; height: 120px; opacity: 0; }
-}
+      .progress-bar {
+        height: 100%;
+        width: 0%;
+        background-color: #ffb7b2;
+        background-image: linear-gradient(
+          45deg,
+          rgba(255, 255, 255, 0.3) 25%,
+          transparent 25%,
+          transparent 50%,
+          rgba(255, 255, 255, 0.3) 50%,
+          rgba(255, 255, 255, 0.3) 75%,
+          transparent 75%,
+          transparent
+        );
+        background-size: 30px 30px;
+        animation: moveStripes 1s linear infinite;
+        transition: width 0.1s linear;
+      }
 
-@keyframes moveStripes { from { background-position: 0 0; } to { background-position: 30px 0; } }
-</style>
-</head>
+      .click-ripple {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        background: rgba(255, 183, 178, 0.5);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 999;
+        transform: translate(-50%, -50%);
+        animation: ripple-out 1.2s ease-out forwards;
+      }
 
-<body>
+      @keyframes ripple-out {
+        0% {
+          width: 0;
+          height: 0;
+          opacity: 0.7;
+        }
+        100% {
+          width: 120px;
+          height: 120px;
+          opacity: 0;
+        }
+      }
 
-<div class="main-container" id="mainContainer">
-  <div id="secretModal">
-    <div class="modal-content">
-      <div class="close-btn" onclick="closeModal()">X</div>
-      <div style="color: #5d4037; line-height: 1.6;">
-        <h4 style="margin-bottom: 5px; color: #ffb7b2; font-size: 13px; text-align: center;">
-          aweee you kept on going.. and found this🥺 by tapping 21 times!! thank you!
-        </h4>
-        <h2 style="margin-bottom: 20px; color: #5d4037; text-align: center; font-size: 22px;">To my dear friend...</h2>
-        
-        <p class="letter-p">
-          Haiii Al Nura!!! I’m really glad I got to celebrate your birthday with you through this little project, even if just for a while :) . I’m just really happy I could make something like this for someone as kind and supportive as youuu.
-        </p>
-        
-        <p class="letter-p style="margin-bottom: 25px;">
-          I’m always wishing you the best in everythinggg ✨ and please know that I’m supporting you from afar and rooting for your happiness every single day😊. You deserve all the good things that come your way. Stay precious and amazing! 💖
-        </p>
+      @keyframes moveStripes {
+        from {
+          background-position: 0 0;
+        }
+        to {
+          background-position: 30px 0;
+        }
+      }
 
-        <p class="letter-p">
-          Thank you so much for giving this little project another chance and for still exploring the little secrets in here 🥺 hahaha. It genuinely means a lot to me. I think this part was really the heart of the whole project all along. I just wanted to make you smile a little and remind you that you're appreciated very much :) 
-        </p>
-          
-        
-        <p style="margin-top: 15px; text-align: right; font-weight: bold; font-size: 18px;">— Mark</p>
+      /* 1. The Parent: Holds the pin in place */
+      .pin-wrapper {
+        position: relative;
+        width: 70px;
+        margin: 10px auto 0;
+        padding-top: 10px;
+      }
+
+      /* 2. The Pin: Stays still because it's on the parent */
+      .pin-wrapper::before {
+        content: "";
+        position: absolute;
+        top: 2px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 14px;
+        height: 14px;
+        background: radial-gradient(circle at 30% 30%, #ff7675, #d63031);
+        border-radius: 50%;
+        border: 1.5px solid #5d4037;
+        box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.3);
+        z-index: 10;
+      }
+
+      /* 3. The Child: Only the paper sways */
+      .sticky-note {
+        position: relative;
+        width: 65px;
+        height: 65px;
+        background: #fff3a0;
+        border: 1px solid #e6db8e;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform-origin: top center; /* Anchor point for the swing */
+        animation: wiggle 1.8s infinite ease-in-out;
+        margin-top: -8px;
+        cursor: pointer; /* Ensures the mouse turns into a 'hand' */
+        transition:
+          transform 0.2s ease,
+          filter 0.2s ease;
+      }
+
+      .sticky-note:hover {
+        filter: drop-shadow(
+          0 0 5px rgba(255, 183, 178, 0.8)
+        ); /* Adds a soft pink glow on hover */
+        transform: rotate(0deg) scale(1.05); /* Straightens and grows slightly when hovered */
+      }
+      .sticky-note:active {
+        transform: scale(0.9);
+      }
+
+      .sticky-note span {
+        font-family: "Marker Felt", cursive;
+        font-size: 20px;
+        color: #5d4037;
+      }
+
+      @keyframes wiggle {
+        0% {
+          transform: rotate(-8deg);
+        }
+        50% {
+          transform: rotate(8deg);
+        }
+        100% {
+          transform: rotate(-8deg);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="main-container" id="mainContainer">
+      <div id="secretModal">
+        <div class="modal-content">
+          <div class="close-btn" onclick="closeModal()">X</div>
+          <div style="color: #5d4037; line-height: 1.6">
+            <h4
+              style="
+                margin-bottom: 5px;
+                color: #ffb7b2;
+                font-size: 13px;
+                text-align: center;
+              "
+            >
+              aweee you kept on going.. and found this bday msg🥺 by tapping 21
+              times!! thank you!
+            </h4>
+            <h2
+              style="
+                margin-bottom: 20px;
+                color: #5d4037;
+                text-align: center;
+                font-size: 22px;
+              "
+            >
+              To my dear friend...
+            </h2>
+
+            <p class="letter-p">
+              Haiii Al Nura!!! I’m really glad I got to celebrate your birthday
+              with you through this little project, even if just for a while :)
+              . I’m just really happy I could make something like this for
+              someone as kind and supportive as youuu.
+            </p>
+
+            <p class="letter-p" style="margin-bottom: 0px; padding-bottom: 0px">
+              I’m always wishing you the best in everythinggg ✨ and please know
+              that I’m supporting you from afar and rooting for your happiness
+              every single day😊. You deserve all the good things that come your
+              way. Stay precious and amazing! 💖
+            </p>
+
+            <p
+              style="
+                margin-bottom: 0px;
+                text-align: right;
+                font-weight: bold;
+                font-size: 18px;
+              "
+            >
+              — Mark
+            </p>
+
+            <p
+              style="
+                text-align: center;
+                font-size: 11px;
+                color: #a8a8a8;
+                font-style: italic;
+                margin-top: 10px;
+                margin-bottom: -5px;
+              "
+            >
+              // open secret_note.ps ⬇️✨
+            </p>
+
+            <div class="pin-wrapper" style="margin-top: 15px; padding-top: 0px">
+              <div
+                class="sticky-note"
+                onclick="showPS()"
+                title="a secret note inside a secret note?!?!?!"
+              >
+                <span>P.S.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        id="psModal"
+        style="
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.85);
+          display: none;
+          align-items: center;
+          justify-content: center;
+          z-index: 150;
+          padding: 20px;
+        "
+      >
+        <div
+          class="modal-content"
+          style="
+            max-width: 400px;
+            border-color: #b5ead7;
+            padding-top: 40px;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+          "
+        >
+          <div
+            class="close-btn"
+            onclick="closePS()"
+            style="
+              background: #b5ead7;
+              position: absolute;
+              top: 10px;
+              right: 10px;
+              margin: 0;
+            "
+          >
+            X
+          </div>
+
+          <div style="color: #5d4037; line-height: 1.8">
+            <p style="font-size: 16px; text-align: center; margin-bottom: 15px">
+              Thank you so much for giving this little project another chance
+              and for still exploring the little secrets in here 🥺 hahaha.
+            </p>
+            <p style="text-align: center; color: #b5ead7; margin: 10px 0">
+              ✦ ✦ ✦
+            </p>
+            <p style="font-size: 16px; text-align: center">
+              It genuinely means a lot to me. I think this part was really the
+              heart of the whole project all along. I just wanted to make you
+              smile a little and remind you that you're appreciated very much.
+              I'm really glad that you're someone who appreciates the little
+              things, because it makes making things like this worth it :)
+            </p>
+
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-wrap: wrap;
+                margin-top: 20px;
+                padding: 0 10px;
+                gap: 10px;
+              "
+            >
+              <p
+                style="
+                  font-size: 13px;
+                  font-style: italic;
+                  color: #a8a8a8;
+                  margin: 0;
+                  line-height: 1.4;
+                  text-align: center;
+                  max-width: 250px;
+                "
+              >
+                // end of secret_note.ps Stay amazing and strong as you are nura
+                ✨
+              </p>
+
+              <img
+                src="https://media.tenor.com/hFWtw7c5Z4QAAAAe/sad-cat-crying-cat.png"
+                style="
+                  width: 60px;
+                  height: 60px;
+                  object-fit: contain;
+                  background: white;
+                  border: 2px solid #b5ead7;
+                  border-radius: 8px;
+                  padding: 2px;
+                  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+                "
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="flashOverlay"></div>
+      <img id="bg" class="scene-img" src="assets/scene1/intro1.png" />
+      <div class="progress-container" id="progressContainer">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+      <div id="hintBubble" class="bottom-hint">
+        <div id="hint" class="hint-text">tap me :)</div>
       </div>
     </div>
-  </div>
 
-  <div id="flashOverlay"></div>
-  <img id="bg" class="scene-img" src="assets/scene1/intro1.png">
-  <div class="progress-container" id="progressContainer"><div class="progress-bar" id="progressBar"></div></div>
-  <div id="hintBubble" class="bottom-hint"><div id="hint" class="hint-text">tap me :)</div></div>
-</div>
+    <script>
+      const container = document.getElementById("mainContainer");
+      const bg = document.getElementById("bg");
+      const hint = document.getElementById("hint");
+      const hintBubble = document.getElementById("hintBubble");
+      const progressContainer = document.getElementById("progressContainer");
+      const progressBar = document.getElementById("progressBar");
+      const flashOverlay = document.getElementById("flashOverlay");
+      const secretModal = document.getElementById("secretModal");
+      const psModal = document.getElementById("psModal");
 
-<script>
-const container = document.getElementById("mainContainer");
-const bg = document.getElementById("bg");
-const hint = document.getElementById("hint");
-const hintBubble = document.getElementById("hintBubble");
-const progressContainer = document.getElementById("progressContainer");
-const progressBar = document.getElementById("progressBar");
-const flashOverlay = document.getElementById("flashOverlay");
-const secretModal = document.getElementById("secretModal");
+      // Prevent dragging on the image
+      bg.addEventListener("dragstart", (e) => e.preventDefault());
+      bg.addEventListener("touchmove", (e) => {
+        if (holding) e.preventDefault();
+      });
 
-// Prevent dragging on the image
-bg.addEventListener("dragstart", (e) => e.preventDefault());
-bg.addEventListener("touchmove", (e) => {
-  if (holding) e.preventDefault();
-});
+      const preloadImg = new Image();
+      preloadImg.src = "assets/scene2/msg.png";
 
-const preloadImg = new Image();
-preloadImg.src = "assets/scene2/msg.png"; 
+      const introImages = [
+        "assets/scene1/intro1.png",
+        "assets/scene1/intro2.png",
+        "assets/scene1/intro3.png",
+        "assets/scene1/intro4.png",
+        "assets/scene1/intro5.png",
+        "assets/scene1/intro6.png",
+        "assets/scene1/intro7.png",
+      ];
+      const msgPool = [
+        "assets/scene2/msg.png",
+        "assets/scene2/msg1.png",
+        "assets/scene2/msg2.png",
+        "assets/scene2/msg3.png",
+        "assets/scene2/msg4.png",
+        "assets/scene2/msg5.png",
+        "assets/scene2/msg6.png",
+        "assets/scene2/msg7.png",
+        "assets/scene2/msg8.png",
+      ];
 
-const introImages = [
-  "assets/scene1/intro1.png", 
-  "assets/scene1/intro2.png", 
-  "assets/scene1/intro3.png", 
-  "assets/scene1/intro4.png", 
-  "assets/scene1/intro5.png", 
-  "assets/scene1/intro6.png", 
-  "assets/scene1/intro7.png"
-];
-const msgPool = ["assets/scene2/msg.png", "assets/scene2/msg1.png", "assets/scene2/msg2.png", "assets/scene2/msg3.png", "assets/scene2/msg4.png", "assets/scene2/msg5.png", "assets/scene2/msg6.png", "assets/scene2/msg7.png", "assets/scene2/msg8.png"];
+      let scene = 1;
+      let step = 0;
+      let progress = 0;
+      let interval = null;
+      let holding = false;
+      let tapCount = 0;
+      let scene3Taps = 0;
+      let cancelCount = 0;
+      let isLocked = false;
+      let introTimer = null;
 
-let scene = 1;
-let step = 0;
-let progress = 0;
-let interval = null;
-let holding = false;
-let tapCount = 0;
-let scene3Taps = 0;
-let cancelCount = 0;
-let isLocked = false;
-let introTimer = null; 
+      function vibrate(ms = 25) {
+        if (navigator.vibrate) {
+          try {
+            navigator.vibrate(ms);
+          } catch (e) {}
+        }
+      }
 
-function vibrate(ms = 25) {
-  if (navigator.vibrate) {
-    try { navigator.vibrate(ms); } catch (e) {}
-  }
-}
+      document.body.addEventListener("click", (e) => {
+        if (secretModal.style.display === "flex" || isLocked) return;
 
-document.body.addEventListener("click", (e) => {
-  if (secretModal.style.display === "flex" || isLocked) return;
-  
-  vibrate(20); 
+        vibrate(20);
 
-  if (scene === 1) {
-    clearTimeout(introTimer); 
-    step++;
-    if (step < introImages.length) {
-      bg.src = introImages[step];
-      
-      if (step === 4) {
-        introTimer = setTimeout(() => {
-          if (scene === 1 && step === 4) {
-            hint.innerText = "Secret Unlocked: 5th image and you stayed for 5 seconds. 🎉 Happy Birthday, Nura! ✨";
-            vibrate([30, 100, 30, 100, 30]); 
+        if (scene === 1) {
+          clearTimeout(introTimer);
+          step++;
+          if (step < introImages.length) {
+            bg.src = introImages[step];
+
+            if (step === 4) {
+              introTimer = setTimeout(() => {
+                if (scene === 1 && step === 4) {
+                  hint.innerText =
+                    "Secret Unlocked: 5th image and you stayed for 5 seconds. 🎉 Happy Birthday, Nura! ✨";
+                  vibrate([30, 100, 30, 100, 30]);
+                }
+              }, 5000);
+            }
+
+            if (step === 6) setupHug();
           }
-        }, 5000); 
+        } else if (scene === 3) {
+          tapCount++;
+          scene3Taps++;
+
+          flashOverlay.style.transition = "opacity 0.05s";
+          flashOverlay.style.opacity = "0.08";
+          setTimeout(() => {
+            flashOverlay.style.opacity = "0";
+          }, 50);
+
+          // Hide hint bubble after 2 taps (unless it's a milestone)
+          if (
+            scene3Taps >= 2 &&
+            tapCount !== 5 &&
+            tapCount !== 10 &&
+            tapCount !== 15 &&
+            tapCount !== 20
+          ) {
+            hintBubble.style.opacity = "0";
+            setTimeout(() => {
+              hintBubble.style.visibility = "hidden";
+            }, 500);
+          }
+
+          // Milestone celebrations
+          if (tapCount === 5) {
+            hintBubble.style.opacity = "1";
+            hintBubble.style.visibility = "visible";
+            hint.innerText = "i'm wishing you all the best :)";
+            vibrate([30, 50, 30]);
+            spawnMilestoneEmojis(["🎉", "✨"], 8);
+          } else if (tapCount === 10) {
+            hintBubble.style.opacity = "1";
+            hintBubble.style.visibility = "visible";
+            hint.innerText = "more birthdays to come!!";
+            vibrate([40, 60, 40, 60]);
+            spawnMilestoneEmojis(["💖", "🥳", "🎂"], 12);
+          } else if (tapCount === 15) {
+            hintBubble.style.opacity = "1";
+            hintBubble.style.visibility = "visible";
+            hint.innerText = "looking for something? 🤣";
+            vibrate([50, 70, 50, 70, 50]);
+            spawnMilestoneEmojis(["✨", "🎁", "🎈", "💫"], 15);
+          } else if (tapCount === 20) {
+            hintBubble.style.opacity = "1";
+            hintBubble.style.visibility = "visible";
+            hint.innerText = "one more 😉";
+            vibrate([60, 80, 60, 80, 60, 80]);
+            spawnMilestoneEmojis(["🌟", "🎊", "💝", "🎉", "✨"], 20);
+          }
+
+          if (tapCount === 21) {
+            vibrate([40, 100, 40]);
+            openModal();
+          } else {
+            if (tapCount <= msgPool.length) {
+              bg.src = msgPool[tapCount - 1];
+            } else {
+              bg.src = msgPool[Math.floor(Math.random() * msgPool.length)];
+            }
+          }
+        }
+      });
+
+      function openModal() {
+        secretModal.style.display = "flex";
       }
 
-      if (step === 6) setupHug();
-    }
-  } else if (scene === 3) {
-    tapCount++;
-    scene3Taps++;
-
-    flashOverlay.style.transition = "opacity 0.05s";
-    flashOverlay.style.opacity = "0.08";
-    setTimeout(() => { flashOverlay.style.opacity = "0"; }, 50);
-
-    // Hide hint bubble after 2 taps (unless it's a milestone)
-    if (scene3Taps >= 2 && tapCount !== 5 && tapCount !== 10 && tapCount !== 15 && tapCount !== 20) {
-      hintBubble.style.opacity = "0";
-      setTimeout(() => { hintBubble.style.visibility = "hidden"; }, 500);
-    }
-
-    // Milestone celebrations
-    if (tapCount === 5) {
-      hintBubble.style.opacity = "1";
-      hintBubble.style.visibility = "visible";
-      hint.innerText = "i'm wishing you all the best :)";
-      vibrate([30, 50, 30]);
-      spawnMilestoneEmojis(['🎉', '✨'], 8);
-    } else if (tapCount === 10) {
-      hintBubble.style.opacity = "1";
-      hintBubble.style.visibility = "visible";
-      hint.innerText = "more birthdays to come!!";
-      vibrate([40, 60, 40, 60]);
-      spawnMilestoneEmojis(['💖', '🥳', '🎂'], 12);
-    } else if (tapCount === 15) {
-      hintBubble.style.opacity = "1";
-      hintBubble.style.visibility = "visible";
-      hint.innerText = "looking for something? 🤣";
-      vibrate([50, 70, 50, 70, 50]);
-      spawnMilestoneEmojis(['✨', '🎁', '🎈', '💫'], 15);
-    } else if (tapCount === 20) {
-      hintBubble.style.opacity = "1";
-      hintBubble.style.visibility = "visible";
-      hint.innerText = "one more 😉";
-      vibrate([60, 80, 60, 80, 60, 80]);
-      spawnMilestoneEmojis(['🌟', '🎊', '💝', '🎉', '✨'], 20);
-    }
-
-    if (tapCount === 21) {
-      vibrate([40, 100, 40]); 
-      openModal();
-    } else {
-      if (tapCount <= msgPool.length) {
-        bg.src = msgPool[tapCount - 1];
-      } else {
-        bg.src = msgPool[Math.floor(Math.random() * msgPool.length)];
+      function closeModal() {
+        vibrate(15);
+        secretModal.style.display = "none";
+        tapCount = 0;
       }
-    }
-  }
-});
 
-function openModal() {
-  secretModal.style.display = "flex";
-}
+      function showPS() {
+        vibrate([30, 50, 30]);
+        document.getElementById("secretModal").style.display = "none";
+        document.getElementById("psModal").style.display = "flex";
+      }
 
-function closeModal() {
-  vibrate(15);
-  secretModal.style.display = "none";
-  tapCount = 0; 
-}
+      function closePS() {
+        vibrate(15);
+        psModal.style.display = "none";
+      }
 
-function setupHug() {
-  scene = 2;
-  cancelCount = 0; 
-  hint.innerText = "hold to hug";
-  progressContainer.style.display = "block";
+      function setupHug() {
+        scene = 2;
+        cancelCount = 0;
+        hint.innerText = "hold to hug";
+        progressContainer.style.display = "block";
 
-  setTimeout(() => {
-    window.addEventListener("pointerdown", holdStart);
-    window.addEventListener("pointerup", holdEnd);
-    window.addEventListener("pointerleave", holdEnd);
-    window.addEventListener("pointercancel", holdEnd);
-  }, 100); 
-}
-
-function holdStart(e) {
-  if (scene !== 2 || isLocked) return;
-  e.preventDefault();
-  if (holding) return;
-  holding = true;
-
-  document.body.style.cursor = `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' style='font-size:30px'><text y='30'>🤗</text></svg>"), auto`;
-
-  bg.classList.add("pulsing"); 
-  // ... rest of your code
-  
-  bg.classList.add("pulsing"); 
-  hint.innerText = "hugging you...";
-  
-  if (navigator.vibrate) {
-    navigator.vibrate([40, 60, 40, 400, 40, 60, 40, 400, 40, 60, 40, 400, 40, 60, 40, 400]);
-  }
-
-  interval = setInterval(() => {
-    if (!holding) return;
-    progress += 1; 
-    progressBar.style.width = progress + "%";
-    // Smooth dynamic tinting
-    document.body.style.backgroundColor = `rgb(253, ${246 - (progress/2.5)}, ${227 - (progress/5)})`;
-    spawnHeart();
-    
-    if (progress % 10 === 0) vibrate(25);
-
-    if (progress >= 100) finishHug();
-  }, 50); 
-}
-
-function holdEnd() {
-  bg.classList.remove("pulsing");
-  document.body.style.cursor = "default";
-  
-  if (scene !== 2 || isLocked) return; 
-  holding = false;
-  clearInterval(interval);
-  if (navigator.vibrate) navigator.vibrate(0);
-  
-  if (progress < 100) {
-    progress = 0;
-    progressBar.style.width = "0%";
-    // Reset background color if let go early
-    document.body.style.backgroundColor = "#fdf6e3";
-    
-    cancelCount++;
-
-    if (cancelCount === 5) {
-      isLocked = true; 
-      cancelCount = 0; 
-      
-      progressContainer.style.borderColor = "#ffd700";
-      progressContainer.style.boxShadow = "0 0 10px #ffd700";
-      hint.innerText = "awww nura! that was a lot of hugs thank you! hahaha!!";
-      
-      vibrate([50, 100, 50, 100, 50]); 
-
-      const specialEmojis = ['❤️', '🥳', '✨', '🎉', '💖'];
-      for(let i = 0; i < 15; i++) {
         setTimeout(() => {
-            const emoji = specialEmojis[Math.floor(Math.random() * specialEmojis.length)];
-            spawnSpecialEmoji(emoji);
-        }, i * 50);
+          window.addEventListener("pointerdown", holdStart);
+          window.addEventListener("pointerup", holdEnd);
+          window.addEventListener("pointerleave", holdEnd);
+          window.addEventListener("pointercancel", holdEnd);
+        }, 100);
       }
 
-      setTimeout(() => {
-        isLocked = false; 
-        progressContainer.style.borderColor = "#5d4037"; 
-        progressContainer.style.boxShadow = "none";
-        if (!holding) hint.innerText = "hold to hug";
-      }, 3000);
+      function holdStart(e) {
+        if (scene !== 2 || isLocked) return;
+        e.preventDefault();
+        if (holding) return;
+        holding = true;
 
-    } else {
-      hint.innerText = "don't let go yet! :(";
-      vibrate(60);
-    }
-  }
-}
+        document.body.style.cursor = `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' style='font-size:30px'><text y='30'>🤗</text></svg>"), auto`;
 
-function spawnSpecialEmoji(symbol) {
-  const el = document.createElement('div');
-  el.className = 'heart'; 
-  el.innerText = symbol;
-  el.style.left = (Math.random() * 80 + 10) + '%';
-  el.style.bottom = "20%";
-  container.appendChild(el);
-  setTimeout(() => el.remove(), 1500);
-}
+        bg.classList.add("pulsing");
+        bg.classList.add("framed");
 
-function spawnMilestoneEmojis(emojis, count) {
-  for(let i = 0; i < count; i++) {
-    setTimeout(() => {
-      const emoji = emojis[Math.floor(Math.random() * emojis.length)];
-      const el = document.createElement('div');
-      el.className = 'heart';
-      el.innerText = emoji;
-      el.style.left = (Math.random() * 80 + 10) + '%';
-      el.style.bottom = "25%";
-      el.style.fontSize = "24px";
-      el.style.animationDuration = "2s";
-      container.appendChild(el);
-      setTimeout(() => el.remove(), 2000);
-    }, i * 30);
-  }
-}
+        hint.innerText = "hugging you...";
 
-function finishHug() {
-  holding = false;
-  bg.classList.remove("pulsing");
-  document.body.style.cursor = "default";
-  clearInterval(interval);
-  window.removeEventListener("pointerdown", holdStart);
-  window.removeEventListener("pointerup", holdEnd);
-  
-  vibrate([30, 150, 30]); 
-  hint.innerText = "hehe that felt nice. thank you :)";
+        if (navigator.vibrate) {
+          navigator.vibrate([
+            40, 60, 40, 400, 40, 60, 40, 400, 40, 60, 40, 400, 40, 60, 40, 400,
+          ]);
+        }
 
-  setTimeout(() => {
-    flashOverlay.style.opacity = "1";
-    
-    setTimeout(() => {
-      scene = 3;
-      // LOCK in the warm pink background permanently
-      // document.body.style.backgroundColor = "#ffecd2";
+        interval = setInterval(() => {
+          if (!holding) return;
+          progress += 1;
+          progressBar.style.width = progress + "%";
+          // Smooth dynamic tinting
+          document.body.style.backgroundColor = `rgb(253, ${246 - progress / 2.5}, ${227 - progress / 5})`;
+          spawnHeart();
 
-      progressContainer.style.display = "none";
-      bg.src = preloadImg.src; 
-      hint.innerText = "tap for more :)";
-      startConfetti();
-      
-      setTimeout(() => {
-        flashOverlay.style.opacity = "0";
-      }, 50); 
-    }, 150); 
-  }, 300); 
-}
+          if (progress % 10 === 0) vibrate(25);
 
-function spawnHeart() {
-  if (Math.random() > 0.15) return; 
-  const heart = document.createElement('div');
-  heart.className = 'heart';
-  heart.innerText = '❤️';
-  heart.style.left = (Math.random() * 40 + 30) + '%';
-  container.appendChild(heart);
-  setTimeout(() => heart.remove(), 1500);
-}
+          if (progress >= 100) finishHug();
+        }, 50);
+      }
 
-function startConfetti() {
-  for(let i=0; i<20; i++) spawnConfetti();
-  setInterval(spawnConfetti, 100);
-}
+      function holdEnd() {
+        bg.classList.remove("pulsing");
+        document.body.style.cursor = "default";
 
-function spawnConfetti() {
-  const confetti = document.createElement('div');
-  confetti.className = 'confetti';
-  confetti.style.left = Math.random() * 100 + '%';
-  
-  // Randomly choose between colored squares and emojis
-  if (Math.random() < 0.5) {
-    // Colored square (original)
-    const colors = ['#ffb7b2', '#ffdac1', '#e2f0cb', '#b5ead7', '#c7ceea', '#fff4bd'];
-    confetti.style.width = '10px';
-    confetti.style.height = '10px';
-    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-    confetti.style.borderRadius = '2px';
-  } else {
-    // Emoji (new)
-    const emojis = ['💙','💝','💜','💞','🎉', '✨', '💖', '🎂', '🎁', '🎈', '🌟', '🎊', '💟', '🥳', '🎆', '🎇'];
-    confetti.innerText = emojis[Math.floor(Math.random() * emojis.length)];
-    confetti.style.fontSize = '20px';
-    confetti.style.pointerEvents = 'none';
-    confetti.style.userSelect = 'none';
-  }
-  
-  const fallDuration = (Math.random() * 2.5 + 2.5) + 's';
-  const swingDuration = (Math.random() * 0.5 + 0.5) + 's';
-  confetti.style.animationDuration = `${fallDuration}, ${swingDuration}`;
-  confetti.style.opacity = Math.random() * 0.5 + 0.5;
-  document.body.appendChild(confetti); 
-  setTimeout(() => confetti.remove(), 5000);
-}
+        if (scene !== 2 || isLocked) return;
+        holding = false;
+        clearInterval(interval);
+        if (navigator.vibrate) navigator.vibrate(0);
 
-function createRipple(e) {
-  const ripple = document.createElement("div");
-  ripple.className = "click-ripple";
-  const x = e.clientX || (e.touches && e.touches[0].clientX);
-  const y = e.clientY || (e.touches && e.touches[0].clientY);
-  ripple.style.left = x + "px";
-  ripple.style.top = y + "px";
-  document.body.appendChild(ripple);
-  setTimeout(() => { ripple.remove(); }, 1200);
-}
+        if (progress < 100) {
+          progress = 0;
+          progressBar.style.width = "0%";
+          // Reset background color if let go early
+          document.body.style.backgroundColor = "#fdf6e3";
+          bg.classList.remove("framed");
 
-document.body.addEventListener("pointerdown", createRipple);
-</script>
-</body>
+          cancelCount++;
+
+          if (cancelCount === 5) {
+            isLocked = true;
+            cancelCount = 0;
+
+            progressContainer.style.borderColor = "#ffd700";
+            progressContainer.style.boxShadow = "0 0 10px #ffd700";
+            hint.innerText =
+              "awww nura! that was a lot of hugs thank you! hahaha!!";
+
+            vibrate([50, 100, 50, 100, 50]);
+
+            const specialEmojis = ["❤️", "🥳", "✨", "🎉", "💖"];
+            for (let i = 0; i < 15; i++) {
+              setTimeout(() => {
+                const emoji =
+                  specialEmojis[
+                    Math.floor(Math.random() * specialEmojis.length)
+                  ];
+                spawnSpecialEmoji(emoji);
+              }, i * 50);
+            }
+
+            setTimeout(() => {
+              isLocked = false;
+              progressContainer.style.borderColor = "#5d4037";
+              progressContainer.style.boxShadow = "none";
+              if (!holding) hint.innerText = "hold to hug";
+            }, 3000);
+          } else {
+            hint.innerText = "don't let go yet! :(";
+            vibrate(60);
+          }
+        }
+      }
+
+      function spawnSpecialEmoji(symbol) {
+        const el = document.createElement("div");
+        el.className = "heart";
+        el.innerText = symbol;
+        el.style.left = Math.random() * 80 + 10 + "%";
+        el.style.bottom = "20%";
+        container.appendChild(el);
+        setTimeout(() => el.remove(), 1500);
+      }
+
+      function spawnMilestoneEmojis(emojis, count) {
+        for (let i = 0; i < count; i++) {
+          setTimeout(() => {
+            const emoji = emojis[Math.floor(Math.random() * emojis.length)];
+            const el = document.createElement("div");
+            el.className = "heart";
+            el.innerText = emoji;
+            el.style.left = Math.random() * 80 + 10 + "%";
+            el.style.bottom = "25%";
+            el.style.fontSize = "24px";
+            el.style.animationDuration = "2s";
+            container.appendChild(el);
+            setTimeout(() => el.remove(), 2000);
+          }, i * 30);
+        }
+      }
+
+      function finishHug() {
+        holding = false;
+        bg.classList.remove("pulsing");
+        document.body.style.cursor = "default";
+        clearInterval(interval);
+        window.removeEventListener("pointerdown", holdStart);
+        window.removeEventListener("pointerup", holdEnd);
+
+        vibrate([30, 150, 30]);
+        hint.innerText = "hehe that felt nice. thank you :)";
+
+        setTimeout(() => {
+          flashOverlay.style.opacity = "1";
+
+          setTimeout(() => {
+            scene = 3;
+            // LOCK in the warm pink background permanently
+            // document.body.style.backgroundColor = "#ffecd2";
+
+            progressContainer.style.display = "none";
+            bg.src = preloadImg.src;
+            hint.innerText = "tap for more :)";
+            startConfetti();
+
+            setTimeout(() => {
+              flashOverlay.style.opacity = "0";
+            }, 50);
+          }, 150);
+        }, 300);
+      }
+
+      function spawnHeart() {
+        if (Math.random() > 0.15) return;
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.innerText = "❤️";
+        heart.style.left = Math.random() * 40 + 30 + "%";
+        container.appendChild(heart);
+        setTimeout(() => heart.remove(), 1500);
+      }
+
+      function startConfetti() {
+        for (let i = 0; i < 20; i++) spawnConfetti();
+        setInterval(spawnConfetti, 100);
+      }
+
+      function spawnConfetti() {
+        const confetti = document.createElement("div");
+        confetti.className = "confetti";
+        confetti.style.left = Math.random() * 100 + "%";
+
+        // Randomly choose between colored squares and emojis
+        if (Math.random() < 0.5) {
+          // Colored square (original)
+          const colors = [
+            "#ffb7b2",
+            "#ffdac1",
+            "#e2f0cb",
+            "#b5ead7",
+            "#c7ceea",
+            "#fff4bd",
+          ];
+          confetti.style.width = "10px";
+          confetti.style.height = "10px";
+          confetti.style.backgroundColor =
+            colors[Math.floor(Math.random() * colors.length)];
+          confetti.style.borderRadius = "2px";
+        } else {
+          // Emoji (new)
+          const emojis = [
+            "💙",
+            "💝",
+            "💜",
+            "💞",
+            "🎉",
+            "✨",
+            "💖",
+            "🎂",
+            "🎁",
+            "🎈",
+            "🌟",
+            "🎊",
+            "💟",
+            "🥳",
+            "🎆",
+            "🎇",
+          ];
+          confetti.innerText =
+            emojis[Math.floor(Math.random() * emojis.length)];
+          confetti.style.fontSize = "20px";
+          confetti.style.pointerEvents = "none";
+          confetti.style.userSelect = "none";
+        }
+
+        const fallDuration = Math.random() * 2.5 + 2.5 + "s";
+        const swingDuration = Math.random() * 0.5 + 0.5 + "s";
+        confetti.style.animationDuration = `${fallDuration}, ${swingDuration}`;
+        confetti.style.opacity = Math.random() * 0.5 + 0.5;
+        document.body.appendChild(confetti);
+        setTimeout(() => confetti.remove(), 5000);
+      }
+
+      function createRipple(e) {
+        const ripple = document.createElement("div");
+        ripple.className = "click-ripple";
+        const x = e.clientX || (e.touches && e.touches[0].clientX);
+        const y = e.clientY || (e.touches && e.touches[0].clientY);
+        ripple.style.left = x + "px";
+        ripple.style.top = y + "px";
+        document.body.appendChild(ripple);
+        setTimeout(() => {
+          ripple.remove();
+        }, 1200);
+      }
+
+      document.body.addEventListener("pointerdown", createRipple);
+      // Dev Shortcut: Press 'D' to skip straight to the celebration
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "F8") {
+          finishHug();
+        }
+
+        if (e.key === "F4") {
+          console.log("Testing Secret Modal...");
+          openModal(); // Bypasses the 21-tap check
+        }
+      });
+    </script>
+  </body>
 </html>
